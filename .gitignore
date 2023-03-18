@@ -1,3 +1,6 @@
 build/
 client/
 cmds.md
+dist/
+workpath/
+node_modules/

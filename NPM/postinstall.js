@@ -61,8 +61,8 @@ function createJSONScripts() {
   let json = {
     "scripts": {
       "start": `${pythonNameInstalled} ./index.py`,
-      "dev": `node ./runDev.js // comming soon`,
-      "build": `node ./buildApp.js // comming soon`
+      "dev": `node ./runDev.js`,
+      "build": `node ./buildApp.js`
     }
   }
   fs.writeFileSync(baseDir + "package.json", JSON.stringify(json))
