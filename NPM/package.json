@@ -1,0 +1,14 @@
+{
+  "name": "pequena",
+  "version": "1.0.1",
+  "description": "HTML desktop creation framework",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node postinstall.js"
+  },
+  "keywords": [
+    "windows"
+  ],
+  "author": "borecjeborec1",
+  "license": "MIT"
+}
