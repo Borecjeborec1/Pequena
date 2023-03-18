@@ -65,7 +65,7 @@ def readdir(path):
     return os.listdir(path)
 
 
-def exists(path):
+def pathExists(path):
     return os.path.exists(path)
 
 
@@ -78,7 +78,7 @@ def isdir(path):
 
 
 exposed_fcs = [getWindowInfo, minimizeWindow, unminimizeWindow, hideWindow, unhideWindow, toggleFullscreen,
-               moveWindow, resizeWindow, setWindowName, readFile, writeFile, mkdir, readdir, exists, isfile, isdir]
+               moveWindow, resizeWindow, setWindowName, readFile, writeFile, mkdir, readdir, pathExists, isfile, isdir]
 
 
 def expose_function(fc):
@@ -156,5 +156,4 @@ def create_window(width=800, height=600,
                                    transparent=transparent, text_select=text_select, zoomable=zoomable, draggable=draggable)
     for fc in exposed_fcs:
         window.expose(fc)
-    print(webview.screens)
     webview.start(gui='edgehtml', debug=True)
