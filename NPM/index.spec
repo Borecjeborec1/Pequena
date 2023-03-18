@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['test.py'],
+    ['index.py'],
     pathex=[],
     binaries=[],
     datas=[('build/', '.')],
@@ -28,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='test',
+    name='index',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

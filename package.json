@@ -1,7 +1,8 @@
 {
   "scripts": {
     "build:py": "cd module/ && python setup.py sdist bdist_wheel",
-    "publish:py": "cd module/ && twine upload dist/*"
+    "publish:py": "cd module/ && twine upload dist/*",
+    "publish:npm": "cd NPM/ && npm publish"
   },
   "author": "borecjeborec1",
   "license": "MIT"

@@ -2,6 +2,7 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const baseDir = "../../"
 const pythonFile = "index.py"
+const specFile = "index.spec"
 let pythonNameInstalled = "py"
 
 function installPequena() {
@@ -54,6 +55,7 @@ function installPequena() {
 
 function createIndexPy() {
   fs.copyFileSync(pythonFile, baseDir + pythonFile)
+  fs.copyFileSync(specFile, baseDir + specFile)
 }
 
 function createJSONScripts() {
@@ -62,7 +64,7 @@ function createJSONScripts() {
     "scripts": {
       "start": `${pythonNameInstalled} ./index.py`,
       "dev": `node ./runDev.js`,
-      "build": `node ./buildApp.js`
+      "build": `pyinstaller index.spec --workpath pyinstaller/`
     }
   }
   fs.writeFileSync(baseDir + "package.json", JSON.stringify(json))
