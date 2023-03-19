@@ -8,7 +8,7 @@ a = Analysis(
     ['index.py'],
     pathex=[],
     binaries=[],
-    datas=[('build/', '.')],
+    datas=[('build', 'build')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

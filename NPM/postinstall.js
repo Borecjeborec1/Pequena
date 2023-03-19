@@ -64,7 +64,7 @@ function createJSONScripts() {
     "scripts": {
       "start": `${pythonNameInstalled} ./index.py`,
       "dev": `node ./runDev.js`,
-      "build": `pyinstaller index.spec --workpath pyinstaller/`
+      "build": `pyinstaller index.spec --workpath tmp/`
     }
   }
   fs.writeFileSync(baseDir + "package.json", JSON.stringify(json))

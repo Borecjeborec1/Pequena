@@ -106,8 +106,12 @@ def check_for_modules(js_path):
 
 def handle_build_copy():
     if not os.path.exists(client_dir):
-        return  # Compiled to exe
-    copy_tree(client_dir, build_dir)
+        return
+    try:
+        copy_tree(client_dir, build_dir)
+    except:
+        print("from Copy tree")
+        return
     script_str = "<script>window.addEventListener('pywebviewready', function () {\nconst PEQUENA = pywebview.api\n"
     new_html = ""
     with open(build_html, 'r') as f:
