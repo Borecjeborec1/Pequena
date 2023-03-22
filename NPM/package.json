@@ -1,6 +1,6 @@
 {
   "name": "pequena",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "HTML desktop creation framework",
   "main": "index.js",
   "scripts": {

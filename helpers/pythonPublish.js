@@ -10,3 +10,4 @@ for (let line in pySetup) {
   }
 }
 fs.writeFileSync("./module/setup.py", pySetup.join("\r\n"))
+fs.rmdirSync("./module/dist/", { recursive: true })

@@ -1,13 +1,45 @@
 # Pequena
-Lightweight desktop app framework
+Pequena is a desktop creation framework that allows you to create desktop applications using web technologies such as HTML, CSS, and JavaScript. It is built on top of the [webview](https://pypi.org/project/pywebview/) library for Python.
+
+## Installation
+Pequena can be installed using pip
+```bash
+pip install pequena
+```
 
 ## Usage
+To use `Pequena`, first import it:
 ```python
 import Pequena
-
-html_file = "path/to/client/index.html"
-window_name = "Hello World!"
-
-Pequena.init(html_file, window_name)
-Pequena.create_window()
 ```
+
+Then call the `init` function to set up the client source directory and the window name:
+```python
+Pequena.init("path/to/client/index.html", "Hello World!")
+```
+
+You can then create a window using the `create_window` function:
+```python
+Pequena.create_window(width=800, height=600)
+``` 
+
+By default, Pequena uses the `EdgeHTML` backend for webview, but you can also use other backends such as `PyQt5`, `QtWebEngine`, and `Gtk`. But those will require additional installs
+
+You can expose Python functions to your client-side JavaScript code by using the `expose_function` function:
+```python
+def my_function():
+    return "Hello, World!"
+Pequena.expose_function(my_function)
+``` 
+
+In your client-side JavaScript code, you can then call the Python function using the `PEQUENA` object:
+```Javascript
+const result = await PEQUENA.my_function();
+```
+
+## NodeJS wrapper
+If you prefer to use Node.js instead of Python, you can use the [pequena](https://www.npmjs.com/package/pequena) wrapper library, which provides a Node.js API for Pequena.
+I personaly advice you to use this if you know NodeJS. It has built in scripts for compiling/hot reload/etc...
+
+## License
+Pequena is licensed under the MIT License.
