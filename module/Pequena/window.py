@@ -118,15 +118,17 @@ def handle_build_copy():
         html_content = f.readlines()
 
     for line in html_content:
-        if ("<script src=" in line):
-            file_regex = re.compile(r'(?:href|src)="([^"]+)"')
-            js_path = os.path.dirname(build_html) + \
-                "/" + file_regex.findall(line)[0]
-            if ("type=\"module\"" in line):
-                script_str += check_for_modules(js_path)
-            else:
-                with open(js_path, 'r') as f:
-                    script_str += f.read() + "\n"
+        if ("<script" in line):
+            if ("src=" in line):
+                file_regex = re.compile(r'(?:href|src)="([^"]+)"')
+                js_path = os.path.dirname(build_html) + \
+                    "/" + file_regex.findall(line)[0]
+                if ("type=\"module\"" in line):
+                    script_str += check_for_modules(js_path)
+                else:
+                    print("JS_PATH: ", js_path)
+                    with open(js_path, 'r', errors='ignore') as f:
+                        script_str += f.read() + "\n"
         else:
             new_html += line
 
@@ -152,7 +154,7 @@ def create_window(width=800, height=600,
                   x=None, y=None, resizable=True, fullscreen=False, min_size=(200, 100),
                   hidden=False, frameless=False, easy_drag=True,
                   minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
-                  transparent=False, text_select=False, zoomable=False, draggable=False):
+                  transparent=False, text_select=False, zoomable=False, draggable=False, port=0, debug=True):
     window = webview.create_window(title=win_name, url=build_html, width=width, height=height,
                                    x=x, y=y, resizable=resizable, fullscreen=fullscreen, min_size=min_size,
                                    hidden=hidden, frameless=frameless, easy_drag=easy_drag,
@@ -160,4 +162,7 @@ def create_window(width=800, height=600,
                                    transparent=transparent, text_select=text_select, zoomable=zoomable, draggable=draggable)
     for fc in exposed_fcs:
         window.expose(fc)
-    webview.start(gui='edgehtml', debug=True)
+    if (port != 0):
+        webview.start(gui='edgehtml', debug=debug, http_port=port)
+    else:
+        webview.start(gui='edgehtml', debug=debug)

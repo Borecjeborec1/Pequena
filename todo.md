@@ -1,13 +1,13 @@
 todo:
-LICENSE
-Not new JSON writing
-hot reload / dev
-more exposed functions
-docs
-web
-examples
-image compression
-exe size reduce
+- Not new JSON writing
+- hot reload / dev
+- more exposed functions
+- docs
+- web
+- examples
+- image compression
+- exe size reduce <7Mb
 
 done:
-version automation (py)
+- LICENSE
+- version automation (py)

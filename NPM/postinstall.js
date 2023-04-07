@@ -62,14 +62,27 @@ function createJSONScripts() {
   if (fs.existsSync(baseDir + "package.json")) return
   let json = {
     "scripts": {
-      "start": `${pythonNameInstalled} ./index.py`,
-      "dev": `node ./runDev.js`,
+      "start": `node ./pequenaStart.js`,
+      "dev": `node ./pequenaDev.js`,
       "build": `pyinstaller index.spec --workpath tmp/`
     }
   }
   fs.writeFileSync(baseDir + "package.json", JSON.stringify(json))
 }
 
+function createStartScript() {
+  let data = fs.readFileSync("./pequenaStart.js", "utf8")
+  data = data.replace("__PYTHONPATH__", pythonNameInstalled)
+  fs.writeFileSync(baseDir + "pequenaStart.js", data)
+}
+
+function createDevScript() {
+  let data = fs.readFileSync("./pequenaDev.js", "utf8")
+  data = data.replace("__PYTHONPATH__", pythonNameInstalled)
+  fs.writeFileSync(baseDir + "pequenaDev.js", data)
+}
+
 installPequena()
 createIndexPy()
+createStartScript()
 createJSONScripts()
