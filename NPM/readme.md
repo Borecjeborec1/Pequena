@@ -22,10 +22,17 @@ Pequena.create_window(width=800, height=600)
 ``` 
 Replace the `path/to/client/index.html` to an actual client directory and you are ready to go!
 PS: Index.html has to be in another folder than index.py. So I highly recommend using `client/` directory where all your frontend lives.
+PSS: `pequenaStart.js` and `pequenaDev.js` should also appear in the root folder. Those files are used when run commands `npm run start` and `npm run dev`.
 
+#### Running the app
 Now you can run your app using
 ```bash
 npm run start
+```
+
+Now use hot-reload functionality
+```bash
+npm run dev
 ```
 
 #### Exposing functions
