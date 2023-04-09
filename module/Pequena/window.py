@@ -77,13 +77,14 @@ def isdir(path):
     return os.path.isdir(path)
 
 
-exposed_fcs = [getWindowInfo, minimizeWindow, unminimizeWindow, hideWindow, unhideWindow, toggleFullscreen,
-               moveWindow, resizeWindow, setWindowName, readFile, writeFile, mkdir, readdir, pathExists, isfile, isdir]
+exposed_fcs_default = [getWindowInfo, minimizeWindow, unminimizeWindow, hideWindow, unhideWindow, toggleFullscreen,
+                       moveWindow, resizeWindow, setWindowName, readFile, writeFile, mkdir, readdir, pathExists, isfile, isdir]
+
+exposed_fcs = []
 
 
 def expose_function(fc):
     exposed_fcs.append(fc)
-    print("exposed: " + str(exposed_fcs))
 
 
 def check_for_modules(js_path):
@@ -160,6 +161,8 @@ def create_window(width=800, height=600,
                                    hidden=hidden, frameless=frameless, easy_drag=easy_drag,
                                    minimized=minimized, on_top=on_top, confirm_close=confirm_close, background_color=background_color,
                                    transparent=transparent, text_select=text_select, zoomable=zoomable, draggable=draggable)
+    for fc in exposed_fcs_default:
+        window.expose(fc)
     for fc in exposed_fcs:
         window.expose(fc)
     if (port != 0):
