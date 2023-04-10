@@ -10,6 +10,12 @@ client_html = ""
 build_html = ""
 win_name = ""
 
+base_directory = None
+if os.name == 'posix':  # for *nix systems
+    base_directory = os.path.join(os.path.expanduser('~'), '.pywebview')
+elif os.name == 'nt':  # for Windows
+    base_directory = os.path.join(os.environ['APPDATA'], 'pywebview')
+
 
 def getWindowInfo():
     return {"x": webview.windows[0].x, "y": webview.windows[0].y, "width": webview.windows[0].width, "height": webview.windows[0].height}
@@ -155,7 +161,7 @@ def create_window(width=800, height=600,
                   x=None, y=None, resizable=True, fullscreen=False, min_size=(200, 100),
                   hidden=False, frameless=False, easy_drag=True,
                   minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
-                  transparent=False, text_select=False, zoomable=False, draggable=False, port=0, debug=True):
+                  transparent=False, text_select=False, zoomable=False, draggable=False, port=None, debug=True):
     window = webview.create_window(title=win_name, url=build_html, width=width, height=height,
                                    x=x, y=y, resizable=resizable, fullscreen=fullscreen, min_size=min_size,
                                    hidden=hidden, frameless=frameless, easy_drag=easy_drag,
@@ -165,7 +171,5 @@ def create_window(width=800, height=600,
         window.expose(fc)
     for fc in exposed_fcs:
         window.expose(fc)
-    if (port != 0):
-        webview.start(gui='edgehtml', debug=debug, http_port=port)
-    else:
-        webview.start(gui='edgehtml', debug=debug)
+    webview.start(gui='edgehtml', debug=debug,
+                  http_port=port, storage_path=base_directory)

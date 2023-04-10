@@ -62,7 +62,7 @@ function createJSONScripts() {
     "scripts": {
       "start": `node ./pequena-start.js`,
       "dev": `node ./pequena-dev.js`,
-      "build": `pyinstaller --onefile --noconsole index.py --workpath tmp/ --add-data="build;build"`
+      "build": `pyinstaller --onefile --noconsole index.py --workpath tmp/ --add-data=\"build;build\"`
     }
   }
   fs.writeFileSync(baseDir + "package.json", JSON.stringify(json))
