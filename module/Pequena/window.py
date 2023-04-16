@@ -127,15 +127,18 @@ def handle_build_copy():
     for line in html_content:
         if ("<script" in line):
             if ("src=" in line):
-                file_regex = re.compile(r'(?:href|src)="([^"]+)"')
-                js_path = os.path.dirname(build_html) + \
-                    "/" + file_regex.findall(line)[0]
-                if ("type=\"module\"" in line):
-                    script_str += check_for_modules(js_path)
+                if ("https://" not in line and "http://" not in line):
+                    file_regex = re.compile(r'(?:href|src)="([^"]+)"')
+                    js_path = os.path.dirname(build_html) + \
+                        "/" + file_regex.findall(line)[0]
+                    if ("type=\"module\"" in line):
+                        script_str += check_for_modules(js_path)
+                    else:
+                        print("JS_PATH: ", js_path)
+                        with open(js_path, 'r', errors='ignore') as f:
+                            script_str += f.read() + "\n"
                 else:
-                    print("JS_PATH: ", js_path)
-                    with open(js_path, 'r', errors='ignore') as f:
-                        script_str += f.read() + "\n"
+                    new_html += line
         else:
             new_html += line
 

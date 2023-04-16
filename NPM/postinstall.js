@@ -69,18 +69,19 @@ function createJSONScripts() {
 }
 
 function createStartScript() {
-  let data = fs.readFileSync("./pequenaStart.js", "utf8")
+  let data = fs.readFileSync("./pequena-start.js", "utf8")
   data = data.replace("__PYTHONPATH__", pythonNameInstalled)
-  fs.writeFileSync(baseDir + "pequenaStart.js", data)
+  fs.writeFileSync(baseDir + "pequena-start.js", data)
 }
 
 function createDevScript() {
-  let data = fs.readFileSync("./pequenaDev.js", "utf8")
+  let data = fs.readFileSync("./pequena-dev.js", "utf8")
   data = data.replace("__PYTHONPATH__", pythonNameInstalled)
-  fs.writeFileSync(baseDir + "pequenaDev.js", data)
+  fs.writeFileSync(baseDir + "pequena-dev.js", data)
 }
 
 installPequena()
 createIndexPy()
 createStartScript()
+createDevScript()
 createJSONScripts()
