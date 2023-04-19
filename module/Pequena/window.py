@@ -3,6 +3,7 @@ import re
 import os
 from distutils.dir_util import copy_tree
 
+_window = None
 
 build_dir = "./build"
 client_dir = ""
@@ -16,77 +17,63 @@ if os.name == 'posix':  # for *nix systems
 elif os.name == 'nt':  # for Windows
     base_directory = os.path.join(os.environ['APPDATA'], 'pywebview')
 
-
-def getWindowInfo():
-    return {"x": webview.windows[0].x, "y": webview.windows[0].y, "width": webview.windows[0].width, "height": webview.windows[0].height}
-
-
-def minimizeWindow():
-    return webview.windows[0].minimize()
-
-
-def unminimizeWindow():
-    return webview.windows[0].restore()
-
-
-def hideWindow():
-    return webview.windows[0].hide()
-
-
-def unhideWindow():
-    return webview.windows[0].show()
-
-
-def toggleFullscreen():
-    return webview.windows[0].toggle_fullscreen()
-
-
-def moveWindow(_x, _y):
-    return webview.windows[0].move(_x, _y)
-
-
-def resizeWindow(_width, _height):
-    return webview.windows[0].resize(_width, _height)
-
-
-def setWindowName(_name):
-    return webview.windows[0].set_title(_name)
-
-
-def readFile(path):
-    with open(path, 'r') as file:
-        return file.read()
-
-
-def writeFile(path, content):
-    with open(path, 'w') as file:
-        file.write(content)
-
-
-def mkdir(path):
-    os.mkdir(path)
-
-
-def readdir(path):
-    return os.listdir(path)
-
-
-def pathExists(path):
-    return os.path.exists(path)
-
-
-def isfile(path):
-    return os.path.isfile(path)
-
-
-def isdir(path):
-    return os.path.isdir(path)
-
-
-exposed_fcs_default = [getWindowInfo, minimizeWindow, unminimizeWindow, hideWindow, unhideWindow, toggleFullscreen,
-                       moveWindow, resizeWindow, setWindowName, readFile, writeFile, mkdir, readdir, pathExists, isfile, isdir]
-
 exposed_fcs = []
+_closable = True
+
+
+class Api:
+    def __init__(self):
+        self._window = None
+
+    def getWindowInfo(self):
+        return {"x": _window.x, "y": _window.y, "width": _window.width, "height": _window.height}
+
+    def minimizeWindow(self):
+        return _window.minimize()
+
+    def unminimizeWindow(self):
+        return _window.restore()
+
+    def hideWindow(self):
+        return _window.hide()
+
+    def unhideWindow(self):
+        return _window.show()
+
+    def toggleFullscreen(self):
+        return _window.toggle_fullscreen()
+
+    def moveWindow(self, _x, _y):
+        return _window.move(_x, _y)
+
+    def resizeWindow(self, _width, _height):
+        return _window.resize(_width, _height)
+
+    def setWindowName(self, _name):
+        return _window.set_title(_name)
+
+    def readFile(self, _path):
+        with open(_path, 'r') as file:
+            return file.read()
+
+    def writeFile(self, _path, content):
+        with open(_path, 'w') as file:
+            file.write(content)
+
+    def mkdir(self, _path):
+        os.mkdir(_path)
+
+    def readdir(self, _path):
+        return os.listdir(_path)
+
+    def pathExists(self, _path):
+        return os.path.exists(_path)
+
+    def isfile(self, _path):
+        return os.path.isfile(_path)
+
+    def isdir(self, _path):
+        return os.path.isdir(_path)
 
 
 def expose_function(fc):
@@ -119,7 +106,7 @@ def handle_build_copy():
     except:
         print("from Copy tree")
         return
-    script_str = "<script>window.addEventListener('pywebviewready', function () {\nconst PEQUENA = pywebview.api\n"
+    script_str = "<script>_window.addEventListener('pywebviewready', function () {\nconst PEQUENA = pywebview.api\n"
     new_html = ""
     with open(build_html, 'r') as f:
         html_content = f.readlines()
@@ -160,19 +147,33 @@ def init(client_src, window_name="Hello World!"):
     handle_build_copy()
 
 
+def set_closable(_val):
+    global _closable
+    _closable = _val
+
+
+def get_closable():
+    return _closable
+
+
+def on_closing():
+    return _closable
+
+
 def create_window(width=800, height=600,
                   x=None, y=None, resizable=True, fullscreen=False, min_size=(200, 100),
                   hidden=False, frameless=False, easy_drag=True,
                   minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
                   transparent=False, text_select=False, zoomable=False, draggable=False, port=None, debug=True):
-    window = webview.create_window(title=win_name, url=build_html, width=width, height=height,
-                                   x=x, y=y, resizable=resizable, fullscreen=fullscreen, min_size=min_size,
-                                   hidden=hidden, frameless=frameless, easy_drag=easy_drag,
-                                   minimized=minimized, on_top=on_top, confirm_close=confirm_close, background_color=background_color,
-                                   transparent=transparent, text_select=text_select, zoomable=zoomable, draggable=draggable)
-    for fc in exposed_fcs_default:
-        window.expose(fc)
+    global _window
+    _window = webview.create_window(title=win_name, url=build_html, js_api=Api(), width=width, height=height,
+                                    x=x, y=y, resizable=resizable, fullscreen=fullscreen, min_size=min_size,
+                                    hidden=hidden, frameless=frameless, easy_drag=easy_drag,
+                                    minimized=minimized, on_top=on_top, confirm_close=confirm_close, background_color=background_color,
+                                    transparent=transparent, text_select=text_select, zoomable=zoomable, draggable=draggable)
+
     for fc in exposed_fcs:
-        window.expose(fc)
+        _window.expose(fc)
+    _window.events.closing += on_closing
     webview.start(gui='edgehtml', debug=debug,
                   http_port=port, storage_path=base_directory)
