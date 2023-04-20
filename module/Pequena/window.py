@@ -2,12 +2,15 @@ import webview
 import re
 import os
 from distutils.dir_util import copy_tree
+from threading import Thread
+
+
+from .handle_build import handle_build_copy
+from .api import Api
 
 _window = None
 
 build_dir = "./build"
-client_dir = ""
-client_html = ""
 build_html = ""
 win_name = ""
 
@@ -18,146 +21,61 @@ elif os.name == 'nt':  # for Windows
     base_directory = os.path.join(os.environ['APPDATA'], 'pywebview')
 
 exposed_fcs = []
-_closable = True
+CLOSABLE = True
 
 
-class Api:
-    def __init__(self):
-        self._window = None
-
-    def getWindowInfo(self):
-        return {"x": _window.x, "y": _window.y, "width": _window.width, "height": _window.height}
-
-    def minimizeWindow(self):
-        return _window.minimize()
-
-    def unminimizeWindow(self):
-        return _window.restore()
-
-    def hideWindow(self):
-        return _window.hide()
-
-    def unhideWindow(self):
-        return _window.show()
-
-    def toggleFullscreen(self):
-        return _window.toggle_fullscreen()
-
-    def moveWindow(self, _x, _y):
-        return _window.move(_x, _y)
-
-    def resizeWindow(self, _width, _height):
-        return _window.resize(_width, _height)
-
-    def setWindowName(self, _name):
-        return _window.set_title(_name)
-
-    def readFile(self, _path):
-        with open(_path, 'r') as file:
-            return file.read()
-
-    def writeFile(self, _path, content):
-        with open(_path, 'w') as file:
-            file.write(content)
-
-    def mkdir(self, _path):
-        os.mkdir(_path)
-
-    def readdir(self, _path):
-        return os.listdir(_path)
-
-    def pathExists(self, _path):
-        return os.path.exists(_path)
-
-    def isfile(self, _path):
-        return os.path.isfile(_path)
-
-    def isdir(self, _path):
-        return os.path.isdir(_path)
+def expose_functions(*fc):
+    for f in fc:
+        exposed_fcs.append(f)
 
 
-def expose_function(fc):
-    exposed_fcs.append(fc)
-
-
-def check_for_modules(js_path):
-    script_dir = os.path.dirname(js_path)
-    script_str = ""
-    with open(js_path, 'r') as f:
-        script_content = f.readlines()
-
-    for line in script_content:
-        if ("import" in line):
-            import_regex = re.compile(r'from \".+\"|from \'.+\'')
-            module_path = script_dir + "/" + import_regex.findall(line)[0].replace("from ", "").replace(
-                "\"", "").replace("\'", "")
-            script_str += check_for_modules(module_path)
-        else:
-            if (not "export \{" in line):
-                script_str += line.replace("export ", "")
-    return script_str + "\n"
-
-
-def handle_build_copy():
-    if not os.path.exists(client_dir):
-        return
-    try:
-        copy_tree(client_dir, build_dir)
-    except:
-        print("from Copy tree")
-        return
-    script_str = "<script>_window.addEventListener('pywebviewready', function () {\nconst PEQUENA = pywebview.api\n"
-    new_html = ""
-    with open(build_html, 'r') as f:
-        html_content = f.readlines()
-
-    for line in html_content:
-        if ("<script" in line):
-            if ("src=" in line):
-                if ("https://" not in line and "http://" not in line):
-                    file_regex = re.compile(r'(?:href|src)="([^"]+)"')
-                    js_path = os.path.dirname(build_html) + \
-                        "/" + file_regex.findall(line)[0]
-                    if ("type=\"module\"" in line):
-                        script_str += check_for_modules(js_path)
-                    else:
-                        print("JS_PATH: ", js_path)
-                        with open(js_path, 'r', errors='ignore') as f:
-                            script_str += f.read() + "\n"
-                else:
-                    new_html += line
-        else:
-            new_html += line
-
-    new_html = new_html.replace("</body>", script_str + "})</script>\n</body>")
-    with open(build_html, "w") as op:
-        op.write(new_html)
-
-
-def init(client_src, window_name="Hello World!"):
-    global client_dir
-    global client_html
+def init(src, window_name="Hello World!"):
     global build_html
     global win_name
 
     win_name = window_name
-    client_dir = os.path.dirname(client_src)
-    client_html = os.path.basename(client_src)
-    build_html = build_dir + "/" + client_html
-    handle_build_copy()
+    client_dir = os.path.dirname(src)
+    build_html = build_dir + "/" + os.path.basename(src)
+    handle_build_copy(client_dir, build_dir, build_html)
 
 
-def set_closable(_val):
-    global _closable
-    _closable = _val
+def set_CLOSABLE(_val):
+    global CLOSABLE
+    CLOSABLE = _val
 
 
-def get_closable():
-    return _closable
+def get_CLOSABLE():
+    return CLOSABLE
+
+
+HIDE_ON_CLOSE = False
+
+
+def set_HIDE_ON_CLOSE(_val):
+    global HIDE_ON_CLOSE
+    HIDE_ON_CLOSE = _val
+
+
+def get_HIDE_ON_CLOSE():
+    return HIDE_ON_CLOSE
 
 
 def on_closing():
-    return _closable
+    if HIDE_ON_CLOSE:
+        def hide():
+            _window.hide()
+        t = Thread(target=hide)
+        t.daemon = True
+        t.start()
+        return False
+    return CLOSABLE
+
+
+def toggleHide(_is_hidden=False):
+    if _is_hidden:
+        _window.show()
+    else:
+        _window.hide()
 
 
 def create_window(width=800, height=600,
@@ -166,7 +84,7 @@ def create_window(width=800, height=600,
                   minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
                   transparent=False, text_select=False, zoomable=False, draggable=False, port=None, debug=True):
     global _window
-    _window = webview.create_window(title=win_name, url=build_html, js_api=Api(), width=width, height=height,
+    _window = webview.create_window(title=win_name, url=build_html, js_api=Api(_window), width=width, height=height,
                                     x=x, y=y, resizable=resizable, fullscreen=fullscreen, min_size=min_size,
                                     hidden=hidden, frameless=frameless, easy_drag=easy_drag,
                                     minimized=minimized, on_top=on_top, confirm_close=confirm_close, background_color=background_color,
