@@ -12,7 +12,7 @@ function changePackageJSON() {
       "scripts": {
         "start": `node Pequena/start.js`,
         "lib": `node Pequena/dev.js`,
-        "build": `pyinstaller --onefile --noconsole index.py --workpath tmp/ --add-data=\"build;build\"`
+        "build": `node Pequena/build.js`
       }
     }
     fs.writeFileSync(rootPath + "package.json", JSON.stringify(json))
@@ -23,6 +23,7 @@ function changePackageJSON() {
 
   packageJson.scripts.start = 'node Pequena/start.js';
   packageJson.scripts.dev = 'node Pequena/dev.js';
+  packageJson.scripts.build = 'node Pequena/build.js';
 
   fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
   console.log('Start and dev scripts added to package.json!');
@@ -44,6 +45,10 @@ function createPequenaFolder() {
     const libJS = fs.readFileSync(__dirname + "/lib.js", "utf-8")
     const libJSPath = path.join(folderPath, 'lib.js');
     fs.writeFileSync(libJSPath, libJS);
+
+    const buildJS = fs.readFileSync(__dirname + "/build.js", "utf-8")
+    const buildJSPath = path.join(folderPath, 'build.js');
+    fs.writeFileSync(buildJSPath, buildJS);
 
     console.log('Pequena folder and scripts created successfully!');
   } else {

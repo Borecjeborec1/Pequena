@@ -9,38 +9,46 @@ npm install pequena
 ```
 
 ## Usage
-After the installation, index.py should appear in your root folder.
-It's content should look like this:
+After the installation, main.py should appear in your root folder together with Pequena folder.
+Main.py content should look like this:
 ```python
 import Pequena
 
-html_file = "path/to/client/index.html"
+html_file = "client/index.html"
 window_name = "Hello World!"
 
 Pequena.init(html_file, window_name)
 Pequena.create_window(width=800, height=600)
 ``` 
-Replace the `path/to/client/index.html` to an actual client directory and you are ready to go!
-PS: Index.html has to be in another folder than index.py. So I highly recommend using `client/` directory where all your frontend lives.
 
+Replace the `client/index.html` to an actual client directory and you are ready to go!
+PS: Index.html has to be in another folder than main.py. So I highly recommend using `client/` directory where all your frontend lives.
+
+#### Running the app
 Now you can run your app using
 ```bash
 npm run start
 ```
+The first run will take longer as it creates a virtual enviroment for the python to achieve minimal size.
+
+Now use hot-reload functionality
+```bash
+npm run dev
+```
 
 #### Exposing functions
-You can expose Python functions to your client-side JavaScript code by using the `expose_function` function:
+You can expose Python functions to your client-side JavaScript code by using the `expose_functions` function:
 ```python
 def my_function():
     return "Hello, World!"
-Pequena.expose_function(my_function)
+Pequena.expose_functions(my_function)
 ``` 
 
 In your client-side JavaScript code, you can then call the Python function using the `PEQUENA` object:
 ```Javascript
 const result = await PEQUENA.my_function();
 ```
-There are some prebuilt ones: *getWindowInfo*, *minimizeWindow*, *unminimizeWindow*, *hideWindow*, *unhideWindow*, *toggleFullscreen*, *moveWindow**, *resizeWin*d*ow, *setWindowName*, *readFile*, *writeFile*, *mkdir*, *readdir*, *pathExists*, *isfile*, *isdir*. More of them is comming soon with a better documentation.
+There are some prebuilt ones: *getWindowInfo*, *minimizeWindow*, *unminimizeWindow*, *hideWindow*, *unhideWindow*, *toggleFullscreen*, *moveWindow**, *resizeWindow*, *setWindowName*, *readFile*, *writeFile*, *mkdir*, *readdir*, *pathExists*, *isfile*, *isdir*. More of them is comming soon with a better documentation.
 
 #### Compiling
 To compile the app pequena uses pyinstaller. The script in `package.json` comes with default settings which should work optimaly.

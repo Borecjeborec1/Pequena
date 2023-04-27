@@ -4,7 +4,9 @@
     "publish:py": "cd module/ && twine upload dist/*",
     "full:py": "node helpers/pythonPublish.js && npm run build:py && npm run publish:py",
     "publish:npm": "cd NPM/ && npm publish",
-    "full:node": "node helpers/nodePublish.js && cd NPM/ && npm publish"
+    "full:node": "node helpers/nodePublish.js && cd NPM/ && npm publish",
+    "start": "node Pequena/start.js",
+    "dev": "node Pequena/dev.js"
   },
   "author": "borecjeborec1",
   "license": "MIT"
