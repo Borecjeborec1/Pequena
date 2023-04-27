@@ -17,8 +17,10 @@ import Pequena
 html_file = "client/index.html"
 window_name = "Hello World!"
 
-Pequena.init(html_file, window_name)
-Pequena.create_window(width=800, height=600)
+Pequena.init(html_file)
+Pequena.create_window( window_name,width=800, height=600)
+
+Pequena.start() # This line should be at the end of the file
 ``` 
 
 Replace the `client/index.html` to an actual client directory and you are ready to go!
@@ -37,18 +39,18 @@ npm run dev
 ```
 
 #### Exposing functions
-You can expose Python functions to your client-side JavaScript code by using the `expose_functions` function:
+You can expose Python functions to your client-side JavaScript code by using the `expose_function` function:
 ```python
 def my_function():
     return "Hello, World!"
-Pequena.expose_functions(my_function)
+Pequena.expose_function(my_function)
 ``` 
 
 In your client-side JavaScript code, you can then call the Python function using the `PEQUENA` object:
 ```Javascript
 const result = await PEQUENA.my_function();
 ```
-There are some prebuilt ones: *getWindowInfo*, *minimizeWindow*, *unminimizeWindow*, *hideWindow*, *unhideWindow*, *toggleFullscreen*, *moveWindow**, *resizeWindow*, *setWindowName*, *readFile*, *writeFile*, *mkdir*, *readdir*, *pathExists*, *isfile*, *isdir*. More of them is comming soon with a better documentation.
+There are some prebuilt ones: *getWindowInfo*, *minimizeWindow*, *unminimizeWindow*, *hideWindow*, *unhideWindow*, *toggleFullscreen*, *moveWindow**, *resizeWin*d*ow, *setWindowName*, *readFile*, *writeFile*, *mkdir*, *readdir*, *pathExists*, *isfile*, *isdir*. More of them is comming soon with a better documentation.
 
 #### Compiling
 To compile the app pequena uses pyinstaller. The script in `package.json` comes with default settings which should work optimaly.
