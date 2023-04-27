@@ -9,26 +9,27 @@ npm install pequena
 ```
 
 ## Usage
-After the installation, index.py should appear in your root folder.
-It's content should look like this:
+After the installation, main.py should appear in your root folder together with Pequena folder.
+Main.py content should look like this:
 ```python
 import Pequena
 
-html_file = "path/to/client/index.html"
+html_file = "client/index.html"
 window_name = "Hello World!"
 
 Pequena.init(html_file, window_name)
 Pequena.create_window(width=800, height=600)
 ``` 
-Replace the `path/to/client/index.html` to an actual client directory and you are ready to go!
-PS: Index.html has to be in another folder than index.py. So I highly recommend using `client/` directory where all your frontend lives.
-PSS: `pequenaStart.js` and `pequenaDev.js` should also appear in the root folder. Those files are used when run commands `npm run start` and `npm run dev`.
+
+Replace the `client/index.html` to an actual client directory and you are ready to go!
+PS: Index.html has to be in another folder than main.py. So I highly recommend using `client/` directory where all your frontend lives.
 
 #### Running the app
 Now you can run your app using
 ```bash
 npm run start
 ```
+The first run will take longer as it creates a virtual enviroment for the python to achieve minimal size.
 
 Now use hot-reload functionality
 ```bash
