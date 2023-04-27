@@ -1,4 +1,4 @@
-const { spawn } = require("child_process");
+const { spawn, execSync } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 
@@ -29,9 +29,9 @@ function initInstalledPython() {
   // check if pip is installed
   try {
     execSync(`${pyPath} -m pip --version`);
-    console.log("Found pip, installing pequena")
+    console.log("Found pip, initializing venv")
   } catch (e) {
-    console.log(`Could not find pip in ${pyPath}. Looking for pip.`);
+    console.log(`Could not find pip in ${pyPath}. Looking for global pip.`);
     try {
       execSync('pip --version');
     } catch (e) {
@@ -44,22 +44,26 @@ function initInstalledPython() {
 
 
 // Check if a venv exists in the current directory
-// if (!fs.existsSync(path.join(__dirname, "venv"))) {
-//   // Initialize a new virtual environment
-//   spawn("pyPath", ["-m", "venv", "venv"], { stdio: "inherit" });
-// }
+if (!fs.existsSync(path.join(__dirname, "Lib", "site-packages")) || !fs.existsSync(path.join(__dirname, "Scripts")) || !fs.existsSync(path.join(__dirname, "pyvenv.cfg"))) {
+  initInstalledPython()
+  // Initialize a new virtual environment
+  console.log("Initializing new env")
+  spawn(pyPath, ["-m", "venv", "Pequena"], { stdio: "inherit" });
+}
+if (!fs.existsSync(path.join(__dirname, "Lib", "site-packages", "Pequena"))) {
+  console.log("Installing Pequena")
+  // spawnInEnv("pip install Pequena")
+}
 
-// // Activate the virtual environment
-initInstalledPython()
-spawn(pyPath, ["-m", "venv", "."], { stdio: "inherit" });
-// const venv_activate = path.join(__dirname, "bin", "activate");
-// spawn(`source ${venv_activate}`, [], { stdio: "inherit", shell: true });
-
-// // Install pywebview in the virtual environment
-// spawn("pip", ["install", "pywebview"], { stdio: "inherit" });
+function spawnInEnv(cmd) {
+  const venvActivateFile = process.platform === 'win32' ? 'activate.bat' : 'activate';
+  const activateCmd = process.platform === 'win32' ? `"${__dirname}/Scripts/${venvActivateFile}"` : `source "${__dirname}/Scripts/${venvActivateFile}"`;
+  console.log(activateCmd)
+  return spawn(`${activateCmd} && ${cmd}`, [], { stdio: "inherit", shell: true });
+}
 
 // // // Run index.py using the virtual environment's Python and print output to console
-// const process = spawn(pyPath, ["index.py"]);
+const pyProcess = spawnInEnv(pyPath, ["index.py"]);
 
 // process.stdout.on("data", (data) => {
 //   console.log(data.toString());

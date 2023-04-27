@@ -21,7 +21,9 @@ elif os.name == 'nt':  # for Windows
     base_directory = os.path.join(os.environ['APPDATA'], 'pywebview')
 
 exposed_fcs = []
+
 CLOSABLE = True
+HIDE_ON_CLOSE = False
 
 
 def expose_functions(*fc):
@@ -46,9 +48,6 @@ def set_CLOSABLE(_val):
 
 def get_CLOSABLE():
     return CLOSABLE
-
-
-HIDE_ON_CLOSE = False
 
 
 def set_HIDE_ON_CLOSE(_val):
