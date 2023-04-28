@@ -65,7 +65,7 @@ async function checkForPequena() {
     const fileToFix = path.join(__dirname, "Lib", "site-packages", "webview", "http.py")
     let fileContent = fs.readFileSync(fileToFix, "utf-8")
     fileContent = fileContent.replace(/import tempfile/, "import os")
-    fileContent = fileContent.replace(/tempfile.TemporaryFile()/g, "open(os.devnull, 'w')")
+    fileContent = fileContent.replace(/tempfile.TemporaryFile\(\)/g, "open(os.devnull, 'w')")
     fs.writeFileSync(fileToFix, fileContent)
     return res
   }

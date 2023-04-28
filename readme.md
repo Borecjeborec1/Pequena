@@ -17,10 +17,9 @@ import Pequena
 html_file = "client/index.html"
 window_name = "Hello World!"
 
-Pequena.init(html_file)
-Pequena.create_window( window_name,width=800, height=600)
+Pequena.init_window(html_file, window_name)
 
-Pequena.start() # This line should be at the end of the file
+Pequena.start_window() # This line should be at the end of the file
 ``` 
 
 Replace the `client/index.html` to an actual client directory and you are ready to go!
