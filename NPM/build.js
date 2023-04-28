@@ -9,7 +9,7 @@ async function checkForPyinstaller() {
 }
 
 checkForPyinstaller()
-const buildProcess = spawnInEnv(`pyinstaller --onefile ./main.py --distpath ./dist/ --workpath Pequena/tmp/ --add-data=Pequena/build;Pequena/build`)
+const buildProcess = spawnInEnv(`pyinstaller --onefile --noconsole ./main.py --distpath ./dist/ --workpath Pequena/tmp/ --add-data=Pequena/build;Pequena/build`)
 
 
 
