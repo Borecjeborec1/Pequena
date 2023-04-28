@@ -1,6 +1,6 @@
 import webview
 import os
-from distutils.dir_util import copy_tree
+import sys
 
 
 from .handle_build import handle_build_copy
@@ -9,7 +9,6 @@ from .api import Api
 _window = None
 
 build_dir = "./Pequena/build"
-build_html = ""
 
 base_directory = None
 if os.name == 'posix':  # for *nix systems
@@ -25,19 +24,18 @@ def expose_functions(*fc):
         exposed_fcs.append(f)
 
 
-def init(src):
-    global build_html
+def init_window(src="client/index.html", window_name="Hello World!", width=800, height=600,
+                x=None, y=None, resizable=True, fullscreen=False, min_size=(200, 100),
+                hidden=False, frameless=False, easy_drag=True,
+                minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
+                transparent=False, text_select=False, zoomable=False, draggable=False):
+    global _window
     client_dir = os.path.dirname(src)
     build_html = build_dir + "/" + os.path.basename(src)
-    handle_build_copy(client_dir, build_dir, build_html)
+    if not getattr(sys, 'frozen', False):
+        handle_build_copy(client_dir, build_dir, build_html)
+    print("Build_html: ", build_html)
 
-
-def create_window(window_name="Hello World!", width=800, height=600,
-                  x=None, y=None, resizable=True, fullscreen=False, min_size=(200, 100),
-                  hidden=False, frameless=False, easy_drag=True,
-                  minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
-                  transparent=False, text_select=False, zoomable=False, draggable=False, ):
-    global _window
     _window = webview.create_window(title=window_name, url=build_html, js_api=Api(_window), width=width, height=height,
                                     x=x, y=y, resizable=resizable, fullscreen=fullscreen, min_size=min_size,
                                     hidden=hidden, frameless=frameless, easy_drag=easy_drag,
@@ -46,9 +44,9 @@ def create_window(window_name="Hello World!", width=800, height=600,
     return _window
 
 
-def start(port=None, debug=True):
+def start_window(port=None, debug=True):
 
     for fc in exposed_fcs:
         _window.expose(fc)
-    webview.start(gui='edgehtml', debug=debug,
+    webview.start(gui='edgechromium', debug=debug,
                   http_port=port, storage_path=base_directory)

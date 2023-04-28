@@ -27,7 +27,7 @@ def handle_build_copy(_client_dir, _build_dir, _build_html):
     try:
         copy_tree(_client_dir, _build_dir)
     except:
-        print("from Copy tree")
+        print("error from Copy tree")
         return
     script_str = "<script>window.addEventListener('pywebviewready', function () {\nconst PEQUENA = pywebview.api\n"
     new_html = ""

@@ -13,14 +13,14 @@ To use `Pequena`, first import it:
 import Pequena
 ```
 
-Then call the `init` function to set up the client source directory and the window name:
+Then call the `init_window` function to set up the client source directory and the window name:
 ```python
-Pequena.init("path/to/client/index.html", "Hello World!")
+Pequena.init_window("path/to/client/index.html", "Hello World!",width=800, height=600)
 ```
 
-You can then create a window using the `create_window` function:
+You can then create a window using the `start_window` function:
 ```python
-Pequena.create_window(width=800, height=600)
+Pequena.start_window()
 ``` 
 
 By default, Pequena uses the `EdgeHTML` backend for webview, but you can also use other backends such as `PyQt5`, `QtWebEngine`, and `Gtk`. But those will require additional installs
