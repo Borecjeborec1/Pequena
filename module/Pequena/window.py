@@ -4,7 +4,7 @@ import sys
 
 
 from .handle_build import handle_build_copy
-from .api import Api
+from .generated import Api
 
 _window = None
 

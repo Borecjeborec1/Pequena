@@ -20,7 +20,7 @@ buildProcess.stderr.on("data", (data) => {
   console.log("Err: " + data.toString());
 });
 
-process.on('exit', (code) => {
+process.on('exit', () => {
   killProcess(buildProcess.pid)
 });
 

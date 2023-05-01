@@ -1,4 +1,5 @@
 from distutils.dir_util import copy_tree
+from .generated import JS_INIT_STRING
 import os
 import re
 
@@ -29,7 +30,12 @@ def handle_build_copy(_client_dir, _build_dir, _build_html):
     except:
         print("error from Copy tree")
         return
-    script_str = "<script>window.addEventListener('pywebviewready', function () {\nconst PEQUENA = pywebview.api\n"
+    script_str = """
+<script>
+    window.addEventListener('pywebviewready', function () {
+        const __PEQUENA__ = pywebview.api;
+        {JS_INIT_STRING}
+        """
     new_html = ""
     with open(_build_html, 'r') as f:
         html_content = f.readlines()

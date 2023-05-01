@@ -1,7 +1,7 @@
-import os
+# Those files are not actually used anywhere.
+# They are segregated for better orientation and then compiled with `build.py` file.
 
-
-class Api:
+class PequenaApi:
     def __init__(self, window):
         self._window = window
 
@@ -31,26 +31,3 @@ class Api:
 
     def setWindowName(self, _name):
         return self._window.set_title(_name)
-
-    def readFile(self, _path):
-        with open(_path, 'r') as file:
-            return file.read()
-
-    def writeFile(self, _path, content):
-        with open(_path, 'w') as file:
-            file.write(content)
-
-    def mkdir(self, _path):
-        os.mkdir(_path)
-
-    def readdir(self, _path):
-        return os.listdir(_path)
-
-    def pathExists(self, _path):
-        return os.path.exists(_path)
-
-    def isfile(self, _path):
-        return os.path.isfile(_path)
-
-    def isdir(self, _path):
-        return os.path.isdir(_path)
