@@ -62,11 +62,6 @@ async function checkForPequena() {
   if (!fs.existsSync(path.join(__dirname, "Lib", "site-packages", "Pequena"))) {
     console.log("Installing Pequena")
     let res = await spawnInEnv(`pip install Pequena`, true)
-    const fileToFix = path.join(__dirname, "Lib", "site-packages", "webview", "http.py")
-    let fileContent = fs.readFileSync(fileToFix, "utf-8")
-    fileContent = fileContent.replace(/import tempfile/, "import os")
-    fileContent = fileContent.replace(/tempfile.TemporaryFile\(\)/g, "open(os.devnull, 'w')")
-    fs.writeFileSync(fileToFix, fileContent)
     return res
   }
   return true

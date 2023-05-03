@@ -49,11 +49,19 @@ for api_file in api_files:
 
 
 JS_INIT_STR = ""
+
 for key in class_methods:
     if "pequena" in key.lower():
         continue
     s = key.replace("Api", "")
-    JS_INIT_STR += f"const __{s}__ = {class_methods[key]}\n"
+    JS_INIT_STR += f"const __{s}__ = {class_methods[key]};"
+
+stringing_regex = r"'(pywebview\.api\.[\w\.]+)'"
+matches = re.findall(stringing_regex, JS_INIT_STR)
+for match in matches:
+    JS_INIT_STR = JS_INIT_STR.replace("'" + match + "'", match)
+
+print(JS_INIT_STR)
 
 result = f"""
 # Automaticly generated code. 
@@ -66,7 +74,7 @@ class Api:
         self._window = window
 {all_methods}
 
-JS_INIT_STRING = \"\"\"{JS_INIT_STR}\"\"\"
+JS_INIT_STRING = \"{JS_INIT_STR}\"
 """
 
 
