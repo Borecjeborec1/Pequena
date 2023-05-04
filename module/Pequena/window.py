@@ -4,7 +4,7 @@ import sys
 
 
 from .handle_build import handle_build_copy
-from .generated import Api
+from .api import Api
 
 _window = None
 
@@ -36,7 +36,7 @@ def init_window(src="client/index.html", window_name="Hello World!", width=800, 
         handle_build_copy(client_dir, build_dir, build_html)
     print("Build_html: ", build_html)
 
-    _window = webview.create_window(title=window_name, url=build_html, js_api=Api(_window), width=width, height=height,
+    _window = webview.create_window(title=window_name, url=build_html, width=width, height=height,
                                     x=x, y=y, resizable=resizable, fullscreen=fullscreen, min_size=min_size,
                                     hidden=hidden, frameless=frameless, easy_drag=easy_drag,
                                     minimized=minimized, on_top=on_top, confirm_close=confirm_close, background_color=background_color,
@@ -45,7 +45,7 @@ def init_window(src="client/index.html", window_name="Hello World!", width=800, 
 
 
 def start_window(port=None, debug=True):
-
+    _window.expose_class(Api)
     for fc in exposed_fcs:
         _window.expose(fc)
     webview.start(gui='edgechromium', debug=debug,

@@ -1,5 +1,4 @@
 from distutils.dir_util import copy_tree
-from .generated import JS_INIT_STRING
 import os
 import re
 
@@ -33,8 +32,8 @@ def handle_build_copy(_client_dir, _build_dir, _build_html):
     script_str = f"""
 <script>
     window.addEventListener('pywebviewready', function () {{
-        const __PEQUENA__ = pywebview.api;
-        {JS_INIT_STRING}
+        const __PEQUENA__ = pywebview.api.Api;
+        const __Node__ = pywebview.api.Api.NodeApi
 """
     new_html = ""
     with open(_build_html, 'r') as f:

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = "0.0.38"
+VERSION = "0.0.48"
 DESCRIPTION = 'Lightweight desktop app framework'
 with open("Readme.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
@@ -14,7 +14,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    install_requires=['pywebview'],
+    install_requires=['pequenawebview'],
     keywords=['python'],
     classifiers=[
         "Development Status :: 1 - Planning",
