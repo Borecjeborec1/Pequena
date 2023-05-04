@@ -4,7 +4,7 @@ import sys
 
 
 from .handle_build import handle_build_copy
-from .api import Api
+from .api import NodeApi, PequenaApi
 
 _window = None
 
@@ -45,7 +45,8 @@ def init_window(src="client/index.html", window_name="Hello World!", width=800, 
 
 
 def start_window(port=None, debug=True):
-    _window.expose_class(Api)
+    _window.expose_class(PequenaApi(_window))
+    _window.expose_class(NodeApi())
     for fc in exposed_fcs:
         _window.expose(fc)
     webview.start(gui='edgechromium', debug=debug,

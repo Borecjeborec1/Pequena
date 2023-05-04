@@ -12,3 +12,5 @@ for (let line in pySetup) {
 fs.writeFileSync("./module/setup.py", pySetup.join("\r\n"))
 if (fs.existsSync("./module/dist/"))
   fs.rmdirSync("./module/dist/", { recursive: true })
+if (fs.existsSync("./module/build/"))
+  fs.rmdirSync("./module/build/", { recursive: true })

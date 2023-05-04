@@ -5,7 +5,7 @@
 import os
 
 
-class Api:
+class PequenaApi:
     def __init__(self, window):
         self._window = window
 
@@ -36,40 +36,41 @@ class Api:
     def setWindowName(self, _name):
         return self._window.set_title(_name)
 
-    class NodeApi:
-        class Fs:
-            def readFile(self, _path):
-                with open(_path, 'r') as file:
-                    return file.read()
 
-            def writeFile(self, _path, _content):
-                with open(_path, 'w') as file:
-                    file.write(_content)
+class NodeApi:
+    class fs:
+        def readFile(self, _path):
+            with open(_path, 'r') as file:
+                return file.read()
 
-            def mkdir(self, _path):
-                os.mkdir(_path)
+        def writeFile(self, _path, _content):
+            with open(_path, 'w') as file:
+                file.write(_content)
 
-            def readdir(self, _path):
-                return os.listdir(_path)
+        def mkdir(self, _path):
+            os.mkdir(_path)
 
-            def pathExists(self, _path):
-                return os.path.exists(_path)
+        def readdir(self, _path):
+            return os.listdir(_path)
 
-            def isfile(self, _path):
-                return os.path.isfile(_path)
+        def pathExists(self, _path):
+            return os.path.exists(_path)
 
-            def isdir(self, _path):
-                return os.path.isdir(_path)
+        def isfile(self, _path):
+            return os.path.isfile(_path)
 
-        class Path:
-            def join(self, *paths):
-                return os.path.join(*paths)
+        def isdir(self, _path):
+            return os.path.isdir(_path)
 
-            def basename(self, _path):
-                return os.path.basename(_path)
+    class path:
+        def join(self, *paths):
+            return os.path.join(*paths)
 
-            def dirname(self, _path):
-                return os.path.dirname(_path)
+        def basename(self, _path):
+            return os.path.basename(_path)
 
-            def resolve(self, *paths):
-                return os.path.abspath(os.path.join(*paths))
+        def dirname(self, _path):
+            return os.path.dirname(_path)
+
+        def resolve(self, *paths):
+            return os.path.abspath(os.path.join(*paths))

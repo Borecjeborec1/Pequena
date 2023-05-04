@@ -38,18 +38,30 @@ npm run dev
 ```
 
 #### Exposing functions
-You can expose Python functions to your client-side JavaScript code by using the `expose_function` function:
+You can expose Python functions to your client-side JavaScript code by using the `expose_functions` function:
 ```python
 def my_function():
     return "Hello, World!"
-Pequena.expose_function(my_function)
+Pequena.expose_functions(my_function)
 ``` 
 
-In your client-side JavaScript code, you can then call the Python function using the `PEQUENA` object:
+In your client-side JavaScript code, you can then call the Python **Pequena** function using the `__Exposed__` object:
 ```Javascript
-const result = await PEQUENA.my_function();
+const result = await __Exposed__.my_function();
 ```
-There are some prebuilt ones: *getWindowInfo*, *minimizeWindow*, *unminimizeWindow*, *hideWindow*, *unhideWindow*, *toggleFullscreen*, *moveWindow**, *resizeWin*d*ow, *setWindowName*, *readFile*, *writeFile*, *mkdir*, *readdir*, *pathExists*, *isfile*, *isdir*. More of them is comming soon with a better documentation.
+There are some prebuilt ones: *getWindowInfo*, *minimizeWindow*, *unminimizeWindow*, *hideWindow*, *unhideWindow*, *toggleFullscreen*, *moveWindow**, *resizeWindow*, *setWindowName*. More of them is comming soon with a better documentation.
+
+In your client-side JavaScript code, you can then call the **Node** object itself using the `__Node__` object:
+```Javascript
+const file = await __Node__.fs.readFile("./hello.txt");
+```
+There are some prebuilt ones: *fs.readFile*, *fs.writeFile*, *fs.mkdir*, *fs.readdir*, *fs.pathExists*, *fs.isfile*, *fs.isdir*, *path.join*, *path.basename*, *path.dirname*, *path.resolve*. More of them is comming soon with a better documentation.
+
+
+In your client-side JavaScript code, you can then call the Python function using the `__Exposed__` object:
+```Javascript
+const result = await __Exposed__.my_function();
+```
 
 #### Compiling
 To compile the app pequena uses pyinstaller. The script in `package.json` comes with default settings which should work optimaly.

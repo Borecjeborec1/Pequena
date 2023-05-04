@@ -2,6 +2,15 @@ from distutils.dir_util import copy_tree
 import os
 import re
 
+BASE_SCRIPT = f"""
+<script>
+    window.addEventListener('pywebviewready', function () {{
+        const __Pequena__ = pywebview.api.PequenaApi;
+        const __Node__ = pywebview.api.NodeApi
+        const __Exposed__ = pywebview.api.exposed
+        
+"""
+
 
 def check_for_modules(js_path):
     script_dir = os.path.dirname(js_path)
@@ -29,16 +38,11 @@ def handle_build_copy(_client_dir, _build_dir, _build_html):
     except:
         print("error from Copy tree")
         return
-    script_str = f"""
-<script>
-    window.addEventListener('pywebviewready', function () {{
-        const __PEQUENA__ = pywebview.api.Api;
-        const __Node__ = pywebview.api.Api.NodeApi
-"""
+    script_str = BASE_SCRIPT
     new_html = ""
     with open(_build_html, 'r') as f:
         html_content = f.readlines()
-
+    is_script_open = False
     for line in html_content:
         if ("<script" in line):
             if ("src=" in line):
@@ -54,8 +58,15 @@ def handle_build_copy(_client_dir, _build_dir, _build_html):
                             script_str += f.read() + "\n"
                 else:
                     new_html += line
+            else:
+                is_script_open = True
+        elif ("</script" in line):
+            is_script_open = False
         else:
-            new_html += line
+            if is_script_open:
+                script_str += line
+            else:
+                new_html += line
 
     new_html = new_html.replace("</body>", script_str + "})</script>\n</body>")
     with open(_build_html, "w") as op:

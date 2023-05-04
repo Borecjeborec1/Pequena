@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = "0.0.48"
+VERSION = "0.0.52"
 DESCRIPTION = 'Lightweight desktop app framework'
 with open("Readme.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
