@@ -1,9 +1,14 @@
-const { spawnInEnv, checkForEnv, checkForPequena, killProcess } = require("./lib.js")
+const { spawnInEnv, checkForEnv, checkForPequena, killProcess, buildMain, buildClient } = require("./lib.js")
 
 checkForEnv()
 checkForPequena()
 
-const pyProcess = spawnInEnv("python main.py");
+buildClient()
+
+buildMain()
+
+
+const pyProcess = spawnInEnv("python Pequena/main.py");
 
 pyProcess.stdout.on("data", (data) => {
   console.log("Data: " + data.toString());

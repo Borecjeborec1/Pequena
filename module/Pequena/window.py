@@ -2,13 +2,9 @@ import webview
 import os
 import sys
 
-
-from .handle_build import handle_build_copy
 from .api import NodeApi, PequenaApi
 
 _window = None
-
-build_dir = "./Pequena/build"
 
 base_directory = None
 if os.name == 'posix':  # for *nix systems
@@ -30,13 +26,7 @@ def init_window(src="client/index.html", window_name="Hello World!", width=800, 
                 minimized=False, on_top=False, confirm_close=False, background_color='#FFFFFF',
                 transparent=False, text_select=False, zoomable=False, draggable=False):
     global _window
-    client_dir = os.path.dirname(src)
-    build_html = build_dir + "/" + os.path.basename(src)
-    if not getattr(sys, 'frozen', False):
-        handle_build_copy(client_dir, build_dir, build_html)
-    print("Build_html: ", build_html)
-
-    _window = webview.create_window(title=window_name, url=build_html, width=width, height=height,
+    _window = webview.create_window(title=window_name, url=src, width=width, height=height,
                                     x=x, y=y, resizable=resizable, fullscreen=fullscreen, min_size=min_size,
                                     hidden=hidden, frameless=frameless, easy_drag=easy_drag,
                                     minimized=minimized, on_top=on_top, confirm_close=confirm_close, background_color=background_color,

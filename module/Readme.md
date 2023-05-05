@@ -4,7 +4,7 @@ Pequena is a desktop creation framework that allows you to create desktop applic
 ## NodeJS wrapper
 If you can use Node.js, then you should use the [pequena](https://www.npmjs.com/package/pequena) wrapper library, which provides a Node.js API for Pequena.
 
-I personaly advice you to use this if you know NodeJS. It has built-in scripts for compiling/hot reload/bundling/minimising/etc...
+I personaly advice you to use this if you have node installed. It has built-in scripts for compiling/hot reload/bundling/minimising/etc...
 
 ## Installation
 Pequena can be installed using pip
@@ -28,7 +28,7 @@ You can then create a window using the `start_window` function:
 Pequena.start_window()
 ``` 
 
-By default, Pequena uses the `EdgeHTML` backend for webview, but you can also use other backends such as `PyQt5`, `QtWebEngine`, and `Gtk`. But those will require additional installs
+By default, Pequena uses the `EdgeChromium` backend for webview, but you can also use other backends such as `PyQt5`, `QtWebEngine`, and `Gtk`. But those will require additional installs
 
 You can expose Python functions to your client-side JavaScript code by using the `expose_function` function:
 ```python

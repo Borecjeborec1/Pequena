@@ -1,8 +1,69 @@
-const { spawn, execSync, spawnSync, exec } = require("child_process");
+const { spawn, execSync, spawnSync } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 
+let HTML_NAME = "index.html"
 
+const DEFAULT_VALUES = {
+  "title": "Hello world!",
+  "src": "./client/index.html",
+  "width": 800,
+  "height": 600,
+  "x": "center",
+  "y": "center",
+  "min_x": 200,
+  "min_y": 100,
+  "resizable": true,
+  "fullscreen": false,
+  "hidden": false,
+  "frameless": false,
+  "easy_drag": true,
+  "minimized": false,
+  "on_top": false,
+  "confirm_close": false,
+  "background_color": "#FFFFFF",
+  "transparent": false,
+  "text_select": false,
+  "zoomable": false,
+  "draggable": false,
+  "debug": false
+}
+
+function buildMain() {
+  let settings = JSON.parse(fs.readFileSync("./settings.json"))
+  for (let key in DEFAULT_VALUES) {
+    settings[key] = handlePyTypes(settings[key], key)
+  }
+
+  const PYTHON_ARGS = `window_name=${settings.title}, src="./build/${HTML_NAME}", width=${settings.width}, height=${settings.height},
+  x=${settings.x}, y=${settings.y}, resizable=${settings.resizable}, fullscreen=${settings.fullscreen}, min_size=(${settings.min_x}, ${settings.min_y}),
+  hidden=${settings.hidden}, frameless=${settings.frameless}, easy_drag=${settings.easy_drag},
+  minimized=${settings.minimized}, on_top=${settings.on_top}, confirm_close=${settings.confirm_close}, background_color=${settings.background_color},
+  transparent=${settings.transparent}, text_select=${settings.text_select}, zoomable=${settings.zoomable}, draggable=${settings.draggable}`
+
+  const PYTHON_START = `Pequena.start_window(debug=${settings.debug})`
+
+  let data = fs.readFileSync("./main.py", "utf-8")
+  data = data.replace(/^.*Pequena\.init_window\(.*/gm, `Pequena.init_window(${PYTHON_ARGS})`)
+  data += PYTHON_START
+  fs.writeFileSync("./Pequena/main.py", data)
+}
+
+
+function handlePyTypes(_value, _key = "") {
+  if (_value === undefined)
+    return handlePyTypes(DEFAULT_VALUES[_key])
+  if (_value === true)
+    return "True"
+  if (_value === false)
+    return "False"
+  if (_value === "center")
+    return "None"
+  if (typeof _value == "string")
+    return `\"${_value}\"`
+  return _value
+
+}
 
 
 function spawnInEnv(cmd, sync = false) {
@@ -80,4 +141,106 @@ function killProcess(_pid, sync = false) {
 }
 
 
-module.exports = { spawnInEnv, checkForEnv, checkForPequena, killProcess }
+const BASE_SCRIPT = `
+<script>
+    window.addEventListener('pywebviewready', function () {
+        const __Pequena__ = pywebview.api.PequenaApi;
+        const __Node__ = pywebview.api.NodeApi
+        const __Exposed__ = pywebview.api.exposed
+`;
+
+function checkForModules(jsPath) {
+  const scriptDir = path.dirname(jsPath);
+  let scriptStr = "";
+  const scriptContent = fs.readFileSync(jsPath, "utf-8");
+
+  const lines = scriptContent.split('\n');
+  for (let line of lines) {
+    if (line.includes("import")) {
+      const importRegex = /from ['"](.+)['"]/;
+      const modulePath = path.join(scriptDir, importRegex.exec(line)[1]);
+      scriptStr += checkForModules(modulePath);
+    } else {
+      if (!line.includes("export {")) {
+        scriptStr += line.replace("export ", "");
+      }
+    }
+  }
+  return scriptStr + "\n";
+}
+
+function buildClient() {
+  let settings = JSON.parse(fs.readFileSync("./settings.json"))
+  let clientHtml = settings.src
+  let clientDir = path.dirname(clientHtml)
+  HTML_NAME = path.basename(clientHtml)
+  let buildDir = "./Pequena/build"
+  let buildHtml = `./Pequena/build/${HTML_NAME}`
+  if (!fs.existsSync(clientDir)) {
+    console.log("client dir: " + clientDir + " does not exist")
+    process.exit(1)
+  }
+
+  copyFolderSync(clientDir, buildDir);
+
+  let scriptStr = BASE_SCRIPT;
+  let newHtml = "";
+  const htmlContent = fs.readFileSync(clientHtml, "utf-8");
+  let isScriptOpen = false;
+  const lines = htmlContent.split('\n');
+  for (let line of lines) {
+    if (line.includes("<script")) {
+      if (line.includes("src=")) {
+        if (!line.includes("https://") && !line.includes("http://")) {
+          const fileRegex = /(?:href|src)="([^"]+)"/;
+          const jsPath = path.join(path.dirname(clientHtml), fileRegex.exec(line)[1]);
+          if (line.includes("type=\"module\"")) {
+            scriptStr += checkForModules(jsPath);
+          } else {
+            const fileContent = fs.readFileSync(jsPath, "utf-8");
+            scriptStr += fileContent + "\n";
+          }
+        } else {
+          newHtml += line;
+        }
+      } else {
+        isScriptOpen = true;
+      }
+    } else if (line.includes("</script")) {
+      isScriptOpen = false;
+    } else {
+      if (isScriptOpen) {
+        scriptStr += line;
+      } else {
+        newHtml += line;
+      }
+    }
+  }
+
+  newHtml = newHtml.replace("</body>", scriptStr + "})</script>\n</body>");
+  fs.writeFileSync(buildHtml, newHtml);
+  projectSrc = buildHtml
+}
+
+
+function copyFolderSync(source, target) {
+  if (!fs.existsSync(target)) {
+    fs.mkdirSync(target);
+  }
+
+  const files = fs.readdirSync(source);
+  files.forEach((file) => {
+    const sourcePath = path.join(source, file);
+    const targetPath = path.join(target, file);
+    if (fs.lstatSync(sourcePath).isDirectory()) {
+      copyFolderSync(sourcePath, targetPath);
+    } else if (path.extname(file) === '.js') { // filter out js files
+
+    } else {
+      console.log("Moved " + sourcePath + " to " + targetPath)
+      fs.copyFileSync(sourcePath, targetPath);
+    }
+  });
+}
+
+module.exports = { spawnInEnv, checkForEnv, checkForPequena, killProcess, buildMain, buildClient }

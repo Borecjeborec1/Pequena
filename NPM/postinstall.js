@@ -3,6 +3,7 @@ const path = require('path');
 
 const rootPath = "../../"
 const pythonFile = "main.py"
+const settingsFile = "settings.json"
 
 function changePackageJSON() {
   const packagePath = path.join(rootPath, 'package.json');
@@ -55,11 +56,15 @@ function createPequenaFolder() {
     console.log('Pequena folder already exists, skipping creation.');
   }
 }
-function createIndexPy() {
+function createRootFiles() {
+  // Create the main.py file
   if (!fs.existsSync(rootPath + pythonFile))
     fs.copyFileSync(pythonFile, rootPath + pythonFile)
+  // Create the settings.json file
+  if (!fs.existsSync(rootPath + settingsFile))
+    fs.copyFileSync(settingsFile, rootPath + settingsFile)
 }
 
 changePackageJSON()
 createPequenaFolder()
-createIndexPy()
+createRootFiles()
