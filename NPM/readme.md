@@ -49,19 +49,14 @@ In your client-side JavaScript code, you can then call the Python **Pequena** fu
 ```Javascript
 const result = await __Exposed__.my_function();
 ```
-There are some prebuilt ones: *getWindowInfo*, *minimizeWindow*, *unminimizeWindow*, *hideWindow*, *unhideWindow*, *toggleFullscreen*, *moveWindow**, *resizeWindow*, *setWindowName*. More of them is comming soon with a better documentation.
 
-In your client-side JavaScript code, you can then call the **Node** object itself using the `__Node__` object:
+In your client-side JavaScript code, you also access the **Node** object itself using the `__Node__` object:
 ```Javascript
 const file = await __Node__.fs.readFile("./hello.txt");
 ```
 There are some prebuilt ones: *fs.readFile*, *fs.writeFile*, *fs.mkdir*, *fs.readdir*, *fs.pathExists*, *fs.isfile*, *fs.isdir*, *path.join*, *path.basename*, *path.dirname*, *path.resolve*. More of them is comming soon with a better documentation.
 
 
-In your client-side JavaScript code, you can then call the Python function using the `__Exposed__` object:
-```Javascript
-const result = await __Exposed__.my_function();
-```
 
 #### Compiling
 To compile the app pequena uses pyinstaller. The script in `package.json` comes with default settings which should work optimaly.
