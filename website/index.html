@@ -7,19 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="styles/styles.css">
   <script src="https://kit.fontawesome.com/c9687a7a14.js" crossorigin="anonymous"></script>
+  <script src="./scripts/mouseshake.js" defer></script>
   <script src="./scripts/script.js" defer></script>
   <title>Pequena</title>
 </head>
 
 <body>
   <div class="panel">
-    <a href="#" class="icon" id="pequena-home-icon" onclick="openWindow(this.id)">
+    <a href="#" class="icon" data-window="pequena-home" onclick="openWindow(this.dataset.window)">
       <img src="assets/home.png" alt="Icon 2">
     </a>
-    <a href="#" class="icon" id="pequena-docs-icon" onclick="openWindow(this.id)">
+    <a href="#" class="icon" data-window="pequena-docs" onclick="openWindow(this.dataset.window)">
       <img src="assets/docs.png" alt="Icon 1">
     </a>
-    <a href="#" class="icon" id="pequena-info-icon" onclick="openWindow(this.id)">
+    <a href="#" class="icon" data-window="pequena-info" onclick="openWindow(this.dataset.window)">
       <img src="assets/info.png" alt="Icon 2">
     </a>
     <a href="https://github.com/Borecjeborec1/Pequena" target="_blank" class="icon">
@@ -32,21 +33,20 @@
       <img src="assets/home.png" alt="Logo" class="logo">
       <h1 class="app-title">Pequena Home</h1>
       <div class="buttons">
-        <button class="maximize"></button>
-        <button class="close"></button>
+        <button class="maximize" data-window="pequena-home" onclick="maximizeWindow(this.dataset.window)"></button>
+        <button class="close" data-window="pequena-home" onclick="closeWindow(this.dataset.window)"></button>
       </div>
     </div>
     <div class="app-content">
       <h1>Pequena</h1>
       <p class="sideNote">Lightweight cross-platform desktop app framework designed for simplicity and speed</p>
       <ul class="mainList">
-        <li><i class="fa fa-simplybuilt" aria-hidden="true"></i>
+        <li>
+          <i class="fa fa-simplybuilt" aria-hidden="true"></i>
           <p class="mainStat">Easy to use</p>
-          <p>Easy and stable keywords, helps you learn
-            really fast.
-          </p>
+          <p>Easy and stable keywords, helps you learn really fast.</p>
         </li>
-        <li><i class="fa fa-firefox" aria-hidden="true"></i>
+        <li><i class="fa fa-desktop" aria-hidden="true"></i>
           <p class="mainStat">Lightweight</p>
           <p>Bundled core exe application is around 8MB.</p>
         </li>
@@ -73,8 +73,8 @@
       <img src="assets/home.png" alt="Logo" class="logo">
       <h1 class="app-title">Pequena Docs</h1>
       <div class="buttons">
-        <button class="maximize"></button>
-        <button class="close"></button>
+        <button class="maximize" data-window="pequena-docs" onclick="maximizeWindow(this.dataset.window)"></button>
+        <button class="close" data-window="pequena-docs" onclick="closeWindow(this.dataset.window)"></button>
       </div>
     </div>
     <div class="app-content">
@@ -114,8 +114,8 @@
       <img src="assets/home.png" alt="Logo" class="logo">
       <h1 class="app-title">Pequena Info</h1>
       <div class="buttons">
-        <button class="maximize"></button>
-        <button class="close"></button>
+        <button class="maximize" data-window="pequena-info" onclick="maximizeWindow(this.dataset.window)"></button>
+        <button class="close" data-window="pequena-info" onclick="closeWindow(this.dataset.window)"></button>
       </div>
     </div>
     <div class="app-content">

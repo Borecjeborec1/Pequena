@@ -59,8 +59,8 @@ body {
   background-color: #1E1E1E;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  width: 1000px;
-  height: 700px;
+  width: 900px;
+  height: 600px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -152,24 +152,26 @@ body {
   display: flex;
   list-style-type: none;
   justify-content: space-between;
-  width: 80%;
+  width: 90%;
+  height: 13rem;
   position: relative;
-  margin: 2rem auto;
+  margin: 4rem auto 10rem;
   align-items: center;
 }
 .application .app-content .mainList li {
-  display: inline-block;
   text-align: center;
   width: 15rem;
   margin: 1rem;
+  height: 100%;
 }
 .application .app-content .mainList li i {
   font-size: 5rem;
   color: #FF5A5F;
 }
 .application .app-content .mainList li .mainStat {
-  font-size: 1.5rem;
-  margin: 1rem;
+  font-size: 1.3rem;
+  margin: 1rem 0;
+  font-weight: bold;
 }
 .application .app-content .smallList {
   display: flex;
