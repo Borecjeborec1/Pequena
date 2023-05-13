@@ -9,6 +9,7 @@ let windowId = 0
 let isMouseDown = false
 
 const LEFT_TRESHOLD = -50
+const SMALL_WINDOW = { width: "900px", height: "600px" }
 
 for (let i = 0; i < appTops.length; ++i) {
   appTops[i].addEventListener("mousedown", e => {
@@ -103,9 +104,47 @@ function maximizeWindow(el) {
     winDiv.style.left = "50%"
     winDiv.classList.add("maximized")
   } else {
-    winDiv.style.width = "1000px"
-    winDiv.style.height = "600px"
+    winDiv.style.width = SMALL_WINDOW.width
+    winDiv.style.height = SMALL_WINDOW.height
     winDiv.classList.remove("maximized")
   }
 }
 
+const INSTALL_MAP = {
+  "bash": "$ sh <(curl https://create.tauri.app/sh)",
+  "npm": "$ npm i pequena",
+  "git": "$ git clone some_repo",
+  "yarn": "$ yarn add pequena",
+  "pnpm": "$ pnpm i pequena",
+}
+
+function selectedLi(el) {
+  document.getElementById("installList").querySelector(".selected").classList.remove("selected")
+  el.classList.add("selected")
+  document.getElementById("installCodeBlock").textContent = INSTALL_MAP[el.textContent]
+  hljs.highlightAll();
+}
+
+
+function clickedNavBar(el) {
+  let nested = el.querySelector(".nestedList")
+  el.querySelector(".name").classList.toggle("active")
+  if (nested.style.display != "none")
+    nested.style.display = "none"
+  else
+    nested.style.display = "block"
+}
+
+function moveToSection(sectionName, el) {
+  el.classList.toggle("active")
+  sectionName = parseString(sectionName)
+  let headingName = parseString(el.textContent)
+  console.log(sectionName, headingName)
+  document.getElementById(sectionName).querySelector("#" + headingName).scrollIntoView({
+    behavior: 'smooth'
+  })
+}
+
+function parseString(_str) {
+  return _str.trim().toLowerCase().replace(/[^\w\s]/gi, '').replace(/ /g, "-")
+}

@@ -5,8 +5,17 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="styles/styles.css">
   <script src="https://kit.fontawesome.com/c9687a7a14.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" type="text/css" href="styles/styles.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/agate.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
+  <script>hljs.highlightAll();</script>
+
   <script src="./scripts/mouseshake.js" defer></script>
   <script src="./scripts/script.js" defer></script>
   <title>Pequena</title>
@@ -68,6 +77,7 @@
       </ul>
     </div>
   </div>
+
   <div class="application" id="pequena-docs">
     <div class="title-bar">
       <img src="assets/home.png" alt="Logo" class="logo">
@@ -77,38 +87,111 @@
         <button class="close" data-window="pequena-docs" onclick="closeWindow(this.dataset.window)"></button>
       </div>
     </div>
+
     <div class="app-content">
-      <h1>Pequena</h1>
-      <p class="sideNote">Lightweight cross-platform desktop app framework designed for simplicity and speed</p>
-      <ul class="mainList">
-        <li><i class="fa fa-simplybuilt" aria-hidden="true"></i>
-          <p class="mainStat">Easy to use</p>
-          <p>Easy and stable keywords, helps you learn
-            really fast.
-          </p>
-        </li>
-        <li><i class="fa fa-firefox" aria-hidden="true"></i>
-          <p class="mainStat">Lightweight</p>
-          <p>Bundled core exe application is around 8MB.</p>
-        </li>
-        <li><i class="fa fa-linux" aria-hidden="true"></i>
-          <p class="mainStat">Cross Platform</p>
-          <p>Doesn't matter if the target is Linux or PiOS.</p>
-        </li>
-        <li><i class="fa fa-github" aria-hidden="true"></i>
-          <p class="mainStat">Open-Source</p>
-          <p>The source code is available on <a href="https://github.com/Borecjeborec1/Pequena">Github</a>.</p>
-        </li>
-      </ul>
-      <ul class="smallList">
-        <li>The core framework app is just 8MB in size, making it easy to distribute and install.</li>
-        <li>Pequena supports Node.js built-in modules, and if that's not enough, python will do the job.</li>
-        <li>Pequena apps use minimal memory, making them fast and efficient even on older computers.</li>
-        <li>Pequena's API is designed to be simple and intuitive, making it easy to create desktop apps
-          quickly.</li>
-      </ul>
+      <div class="navBar">
+        <ul class="topList">
+          <li>
+            <div class="name active" onclick="clickedNavBar(this.parentNode)">Quick Start</div>
+            <ul class="nestedList firstList">
+              <li class="active"
+                onclick="moveToSection(this.parentNode.parentNode.querySelector('.name').textContent, this)">
+                Prerequisites
+              </li>
+              <li onclick="moveToSection(this.parentNode.parentNode.querySelector('.name').textContent, this)">
+                Installation</li>
+              <li onclick="moveToSection(this.parentNode.parentNode.querySelector('.name').textContent, this)">
+                Hello World!</li>
+            </ul>
+          </li>
+          <li onclick="clickedNavBar(this)">
+            <div class="name">Docs</div>
+            <ul class="nestedList">
+              <li>Something</li>
+              <li>Something</li>
+              <li>Something</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="container">
+        <div id="quick-start">
+
+          <h1>Pequena</h1>
+          <p class="sideNote">v1.2.21</p>
+          <h3 id="prerequisites">Prerequisites</h3>
+          <p class="plainText">Before you begin, there are a few things you'll need to make sure you have installed on
+            your
+            computer. </p>
+          <h5>1. Python</h5>
+          <p class="plainText">The first is Python. Python is a programming language that is used by many different
+            applications and frameworks, so it's likely that you already have it installed. If not, you can download it
+            from
+            the Python website and follow the installation instructions.</p>
+          <h5>2. Node.js</h5>
+          <p class="plainText">The second prerequisite is Node.js. Node.js is a JavaScript runtime that is used for
+            building
+            scalable, high-performance applications. Again, you can download Node.js from the official website and
+            follow
+            the installation instructions to get it set up on your machine.</p>
+          <p class="plainText">If you're using Windows 10 or higher, you're now ready to go!</p>
+
+          <h5>3. Microsoft Edge Webview2</h5>
+          <p class="plainText">If you're using Windows 10 or higher, you're good to go! However, if you're running
+            Windows
+            7, 8, or 8.1, you'll need to make sure you have the WebView2 framework installed. This framework provides an
+            embedded web browser that is used by Pequena, so it's necessary to have it installed. </p>
+          <p class="plainText">To install the WebView2 framework, simply download it from the Microsoft website and
+            follow
+            the installation instructions. Once you have all of these prerequisites in place, you'll be ready to get
+            started
+            with your software development project!</p>
+
+
+          <h3 id="installation">Installation</h3>
+          <p class="plainText">To download the Pequena, simply use one of these tools</p>
+          <ul id="installList">
+            <li class="selected" onclick="selectedLi(this)">bash</li>
+            <li onclick="selectedLi(this)">npm</li>
+            <li onclick="selectedLi(this)">git</li>
+            <li onclick="selectedLi(this)">yarn</li>
+            <li onclick="selectedLi(this)">pnpm</li>
+          </ul>
+          <pre><code class="language-shell" id="installCodeBlock">$ sh <(curl https://create.tauri.app/sh)</code></pre>
+
+
+          <h3 id="hello-world">Hello World!</h3>
+          <p class="plainText">
+            Once you've installed the framework, you should see a files called <span
+              class="colorHighlights">main.py</span> and <span class="colorHighlights">settings.json</span> in your root
+            folder, along with a folder <span class="colorHighlights">Pequena/</span>. In this foler the virtual python
+            enviroment lives together with the node scripts needed for starting and bundling the application.</p>
+          <p class="plainText">Open up the <span class="colorHighlights">main.py</span> file and you should see the
+            following code:</p>
+
+          <pre><code class="language-python">import Pequena
+window = Pequena.init_window()</code></pre>
+          <p class="plainText">This code initializes a new window using the Pequena framework. Once you've set up your
+            frontend code, you'll be able to use this code to display your app.</p>
+          <p class="plainText">First run will create a virtual environment for Python to achieve minimal size, so it may
+            take a bit longer than subsequent runs.</p>
+          <p class="plainText">To run your app, you can use the following command:</p>
+
+          <pre><code class="language-shell">$ npm run start</code></pre>
+          <p class="plainText">With this basic "Hello World" app up and running, you're ready to start exploring the
+            Pequena
+            framework and building more complex applications.</p>
+        </div>
+      </div>
     </div>
   </div>
+
+
+
   <div class="application" id="pequena-info">
     <div class="title-bar">
       <img src="assets/home.png" alt="Logo" class="logo">

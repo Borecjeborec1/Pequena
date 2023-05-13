@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&display=swap');
 
+$red: #FF5A5F;
+$yellow: #FFB948;
+$white:#FFFFFF;
+$dark: #1E1E1E;
+$scrollBar: #353535;
+
 * {
   margin: 0;
   padding: 0;
@@ -9,7 +15,6 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #f0f0f0;
   font-family: 'Wix Madefor Display', sans-serif;
   overflow: hidden;
   background-image: url(../assets/bg.avif);
@@ -55,7 +60,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #1E1E1E;
+  background-color: $dark;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   width: 900px;
@@ -71,7 +76,7 @@ body {
   .title-bar {
     display: flex;
     align-items: center;
-    background-color: #FF5A5F;
+    background-color: $red;
     height: 30px;
     width: 100%;
     border-top-left-radius: 5px;
@@ -127,7 +132,7 @@ body {
     min-height: fit-content;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #1E1E1E;
+    scrollbar-color: $dark;
     user-select: text;
 
     &::-webkit-scrollbar {
@@ -135,12 +140,12 @@ body {
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #353535;
+      background-color: $scrollBar;
       border-radius: 5px;
     }
 
     &::-webkit-scrollbar-track {
-      background-color: #1E1E1E;
+      background-color: $dark;
     }
 
     h1 {
@@ -148,7 +153,7 @@ body {
       margin: auto;
       position: relative;
       width: fit-content;
-      color: #FF5A5F;
+      color: $red;
     }
 
     .sideNote {
@@ -175,7 +180,7 @@ body {
 
         i {
           font-size: 5rem;
-          color: #FF5A5F;
+          color: $red;
         }
 
         .mainStat {
@@ -198,4 +203,119 @@ body {
 
     }
   }
+}
+
+#pequena-docs {
+  .title-bar {
+    background-color: $yellow;
+  }
+
+
+
+  .container {
+    width: 60%;
+    position: relative;
+    margin: 0 18% 0 auto;
+
+    h1 {
+      color: $yellow;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin: 1.5rem 0;
+      color: $yellow;
+      scroll-margin: 1rem;
+    }
+
+    h5 {
+      font-size: 1.1rem;
+      margin: 1rem;
+    }
+
+    .plainText {
+      margin-left: 2rem;
+      padding: .5rem 0;
+    }
+
+    code {
+      border-radius: 10px;
+      margin: .5rem 0;
+      margin-left: 2rem;
+    }
+
+    .colorHighlights {
+      color: $yellow;
+    }
+
+    ul {
+      margin-left: 2rem;
+      display: flex;
+      justify-content: space-evenly;
+
+      li {
+        list-style-type: none;
+        padding: 1rem 2rem;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .selected {
+        border-bottom: 2px solid $yellow;
+        color: $yellow;
+      }
+    }
+  }
+
+  .navBar {
+    width: 150px;
+    height: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+
+    .topList {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        flex-direction: column;
+        cursor: pointer;
+
+        .name {
+          padding: 5px 0;
+          width: 100%;
+        }
+
+        .nestedList {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: none;
+          flex-direction: column;
+
+          li {
+            margin: 5px 0 5px 10px;
+            cursor: pointer;
+          }
+        }
+
+        .firstList {
+          display: block;
+        }
+      }
+
+      .active {
+        color: $yellow;
+        font-weight: bold;
+      }
+    }
+  }
+
 }

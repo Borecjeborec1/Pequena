@@ -8,7 +8,6 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #f0f0f0;
   font-family: "Wix Madefor Display", sans-serif;
   overflow: hidden;
   background-image: url(../assets/bg.avif);
@@ -182,4 +181,98 @@ body {
   width: fit-content;
   margin: 2rem auto;
   line-height: 1.8;
+}
+
+#pequena-docs .title-bar {
+  background-color: #FFB948;
+}
+#pequena-docs .container {
+  width: 60%;
+  position: relative;
+  margin: 0 18% 0 auto;
+}
+#pequena-docs .container h1 {
+  color: #FFB948;
+}
+#pequena-docs .container h3 {
+  font-size: 1.4rem;
+  margin: 1.5rem 0;
+  color: #FFB948;
+  scroll-margin: 1rem;
+}
+#pequena-docs .container h5 {
+  font-size: 1.1rem;
+  margin: 1rem;
+}
+#pequena-docs .container .plainText {
+  margin-left: 2rem;
+  padding: 0.5rem 0;
+}
+#pequena-docs .container code {
+  border-radius: 10px;
+  margin: 0.5rem 0;
+  margin-left: 2rem;
+}
+#pequena-docs .container .colorHighlights {
+  color: #FFB948;
+}
+#pequena-docs .container ul {
+  margin-left: 2rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+#pequena-docs .container ul li {
+  list-style-type: none;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+#pequena-docs .container ul .selected {
+  border-bottom: 2px solid #FFB948;
+  color: #FFB948;
+}
+#pequena-docs .navBar {
+  width: 150px;
+  height: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  position: fixed;
+}
+#pequena-docs .navBar .topList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+#pequena-docs .navBar .topList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  flex-direction: column;
+  cursor: pointer;
+}
+#pequena-docs .navBar .topList li .name {
+  padding: 5px 0;
+  width: 100%;
+}
+#pequena-docs .navBar .topList li .nestedList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+  flex-direction: column;
+}
+#pequena-docs .navBar .topList li .nestedList li {
+  margin: 5px 0 5px 10px;
+  cursor: pointer;
+}
+#pequena-docs .navBar .topList li .firstList {
+  display: block;
+}
+#pequena-docs .navBar .topList .active {
+  color: #FFB948;
+  font-weight: bold;
 }/*# sourceMappingURL=styles.css.map */
