@@ -33,8 +33,7 @@ body {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-
-.icon {
+.panel .icon {
   display: block;
   width: 50px;
   height: 50px;
@@ -42,12 +41,22 @@ body {
   border-radius: 10px;
   background-color: #fff;
 }
-
-.icon img {
+.panel .icon img {
   display: block;
   width: 30px;
   height: 30px;
   margin: 10px;
+}
+
+#clock {
+  position: fixed;
+  top: 20px;
+  right: 50px;
+  font-size: 4rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px #000;
+  letter-spacing: -2px;
 }
 
 .application {
@@ -63,6 +72,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  resize: both;
 }
 .application:not(#pequena-home) {
   display: none;
@@ -193,6 +203,7 @@ body {
 }
 #pequena-docs .container h1 {
   color: #FFB948;
+  font-size: 90px;
 }
 #pequena-docs .container h3 {
   font-size: 1.4rem;
@@ -275,4 +286,10 @@ body {
 #pequena-docs .navBar .topList .active {
   color: #FFB948;
   font-weight: bold;
+}
+#pequena-docs .docs-section {
+  display: none;
+}
+#pequena-docs #quick-start {
+  display: block;
 }/*# sourceMappingURL=styles.css.map */

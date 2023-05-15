@@ -128,16 +128,20 @@ function selectedLi(el) {
 
 function clickedNavBar(el) {
   let nested = el.querySelector(".nestedList")
-  el.querySelector(".name").classList.toggle("active")
-  if (nested.style.display != "none")
-    nested.style.display = "none"
-  else
-    nested.style.display = "block"
+  let newDocs = document.getElementById(el.dataset.section)
+  document.querySelectorAll(".docs-section").forEach(el => el.style.display = "none")
+  document.querySelectorAll(".nestedList").forEach(el => el.style.display = "none")
+  newDocs.style.display = "block"
+  document.querySelectorAll(".active").forEach(el => el.classList.remove("active"))
+  el.querySelector(".name").classList.add("active")
+  newDocs.scrollTo({ top: 100, left: 100, behavior: 'smooth' });
+  nested.style.display = "block"
 }
 
-function moveToSection(sectionName, el) {
-  el.classList.toggle("active")
-  sectionName = parseString(sectionName)
+function moveToSection(parentNode, el) {
+  parentNode.querySelectorAll(".nestedList .active").forEach(el => el.classList.remove("active"))
+  el.classList.add("active")
+  let sectionName = parseString(parentNode.querySelector('.name').textContent)
   let headingName = parseString(el.textContent)
   console.log(sectionName, headingName)
   document.getElementById(sectionName).querySelector("#" + headingName).scrollIntoView({
@@ -148,3 +152,28 @@ function moveToSection(sectionName, el) {
 function parseString(_str) {
   return _str.trim().toLowerCase().replace(/[^\w\s]/gi, '').replace(/ /g, "-")
 }
+
+
+function updateClock() {
+  let now = new Date();
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  let seconds = now.getSeconds();
+
+  if (hours < 10) {
+    hours = '0' + hours;
+  }
+
+  if (minutes < 10) {
+    minutes = '0' + minutes;
+  }
+
+  if (seconds < 10) {
+    seconds = '0' + seconds;
+  }
+
+  let timeString = hours + ':' + minutes + ':' + seconds;
+  document.getElementById('clock').textContent = timeString;
+}
+updateClock()
+setInterval(updateClock, 1000);

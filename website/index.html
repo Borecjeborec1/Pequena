@@ -37,6 +37,12 @@
     </a>
   </div>
 
+  <div id="clock">
+
+  </div>
+
+
+
   <div class="application" id="pequena-home">
     <div class="title-bar">
       <img src="assets/home.png" alt="Logo" class="logo">
@@ -57,7 +63,7 @@
         </li>
         <li><i class="fa fa-desktop" aria-hidden="true"></i>
           <p class="mainStat">Lightweight</p>
-          <p>Bundled core exe application is around 8MB.</p>
+          <p>Pequena automaticly bundles all files and compress them.</p>
         </li>
         <li><i class="fa fa-linux" aria-hidden="true"></i>
           <p class="mainStat">Cross Platform</p>
@@ -91,27 +97,54 @@
     <div class="app-content">
       <div class="navBar">
         <ul class="topList">
-          <li>
+          <li data-section="quick-start">
             <div class="name active" onclick="clickedNavBar(this.parentNode)">Quick Start</div>
             <ul class="nestedList firstList">
-              <li class="active"
-                onclick="moveToSection(this.parentNode.parentNode.querySelector('.name').textContent, this)">
+              <li class="active" onclick="moveToSection(this.parentNode.parentNode, this)">
                 Prerequisites
               </li>
-              <li onclick="moveToSection(this.parentNode.parentNode.querySelector('.name').textContent, this)">
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">
                 Installation</li>
-              <li onclick="moveToSection(this.parentNode.parentNode.querySelector('.name').textContent, this)">
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">
                 Hello World!</li>
             </ul>
           </li>
-          <li onclick="clickedNavBar(this)">
-            <div class="name">Docs</div>
+
+          <li data-section="pequena-api">
+            <div class="name" onclick="clickedNavBar(this.parentNode)">Pequena API</div>
+
             <ul class="nestedList">
-              <li>Something</li>
-              <li>Something</li>
-              <li>Something</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">
+                init_window
+              </li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">
+                expose_function</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">
+                start_window</li>
             </ul>
           </li>
+
+          <li data-section="window-api">
+            <div class="name" onclick="clickedNavBar(this.parentNode)">Window API</div>
+
+            <ul class="nestedList">
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">on_top</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">width</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">height</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">position</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">destroy</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">hide</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">minimize</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">move</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">resize</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">restore</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">set_title</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">show</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">toggle_fullscreen</li>
+            </ul>
+          </li>
+
+
         </ul>
       </div>
 
@@ -119,10 +152,8 @@
 
 
       <div class="container">
-        <div id="quick-start">
 
-          <h1>Pequena</h1>
-          <p class="sideNote">v1.2.21</p>
+        <div id="quick-start" class="docs-section">
           <h3 id="prerequisites">Prerequisites</h3>
           <p class="plainText">Before you begin, there are a few things you'll need to make sure you have installed on
             your
@@ -186,6 +217,70 @@ window = Pequena.init_window()</code></pre>
             Pequena
             framework and building more complex applications.</p>
         </div>
+
+
+        <div id="pequena-api" class="docs-section">
+          <h3 id="init_window">init_window()</h3>
+
+
+          <p class="plainText">This function initializes a new window using the Pequena framework. It takes no arguments
+            and returns a Window object that you can use to interact with the window.</p>
+
+          <pre><code class="language-python">window = init_window()</code></pre>
+
+          <h3 id="expose_function">expose_function(*functions)</h3>
+
+          <pre><code class="language-python">def hello_py():
+    print("Hello from python")
+
+Pequena.expose_function(hello_py)</code></pre>
+
+          <p class="plainText">This function exposes one or more functions to be called from your frontend JavaScript
+            code. This can be useful if you need to perform complex calculations or operations on the server side that
+            can't be done in the browser. To use this function, simply pass in one or more Python functions as
+            arguments.</p>
+
+          <p class="plainText">These functions will then be accessible from your JavaScript code using the __Exposed__
+            object.
+          </p>
+          <pre><code class="language-python">__Exposed__.hello_py()</code></pre>
+
+
+          <h3 id="start_window">start_window()</h3>
+          <p class="plainText">This function is used internally by the Pequena framework to start the window loop and
+            handle user input. You don't need to call this function directly, as it is automatically called when you
+            start your app using the npm run start command</p>
+
+        </div>
+
+
+        <div id="window-api" class="docs-section">
+          <h3 id="on_top">on_top</h3>
+          <p class="plainText">Get or set whether the window is always on top.</p>
+          <pre><code class="language-python">window = init_window()</code></pre>
+
+          <h3 id="width">width</h3>
+          <p class="plainText">Get width of the pequena window.</p>
+          <pre><code class="language-python">window.width</code></pre>
+
+          <h3 id="height">height</h3>
+          <p class="plainText">Get width of the pequena window.</p>
+          <pre><code class="language-python">window.height</code></pre>
+
+          <h3 id="position">position</h3>
+          <p class="plainText">Get x and y coordinates of the pequena window.</p>
+          <pre><code class="language-python">window.position</code></pre>
+
+
+          <h3 id="destroy">destroy</h3>
+          <p class="plainText">Get width of the pequena window.</p>
+          <pre><code class="language-python">window.destroy()</code></pre>
+
+
+
+
+        </div>
+
       </div>
     </div>
   </div>
