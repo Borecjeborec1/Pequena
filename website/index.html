@@ -5,16 +5,106 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://kit.fontawesome.com/c9687a7a14.js" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" type="text/css" href="styles/styles.css">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/agate.min.css">
+
+  <style>
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      padding: 1em;
+      background: #262626;
+      color: #FFFFFF;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-literal,
+    .hljs-section,
+    .hljs-link {
+      color: #00A699;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+
+    .hljs-symbol,
+    .hljs-attribute,
+    .hljs-meta,
+    .hljs-selector-id,
+    .hljs-title {
+      color: #00A699;
+    }
+
+    .hljs-string,
+    .hljs-bullet,
+    .hljs-subst,
+    .hljs-addition {
+      color: #00A699;
+    }
+
+    .hljs-regexp,
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-tag,
+    .hljs-name {
+      color: #00A699;
+    }
+
+    .hljs-type,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-attr,
+    .hljs-selector-attr,
+    .hljs-selector-class,
+    .hljs-selector-pseudo,
+    .hljs-number {
+      color: #00A699;
+    }
+
+    .hljs-comment,
+    .hljs-quote,
+    .hljs-deletion {
+      color: #00A699;
+    }
+
+    .hljs-meta-keyword,
+    .hljs-doctag {
+      color: #00A699;
+    }
+
+    .hljs-meta-string {
+      color: #00A699;
+    }
+
+    .hljs-code {
+      color: #FFFFFF;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+  </style>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/bash.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
-  <script>hljs.highlightAll();</script>
+  <script>
+    hljs.registerLanguage("npm", function () {
+      return {
+        keywords: {
+          keyword: ["npm", "git", "pnpm", "yarn", "sh", "some_link"],
+        },
+      };
+    });
+
+    hljs.highlightAll();
+  </script>
 
   <script src="./scripts/mouseshake.js" defer></script>
   <script src="./scripts/script.js" defer></script>
@@ -22,6 +112,7 @@
 </head>
 
 <body>
+  <!-- Main Panel with icons -->
   <div class="panel">
     <a href="#" class="icon" data-window="pequena-home" onclick="openWindow(this.dataset.window)">
       <img src="assets/home.png" alt="Icon 2">
@@ -36,13 +127,12 @@
       <img src="assets/github.png" alt="Icon 3">
     </a>
   </div>
+  <!-- </End of The main panel> -->
 
-  <div id="clock">
-
-  </div>
-
+  <div id="clock"></div>
 
 
+  <!-- Firstly loaded Pequena Home app -->
   <div class="application" id="pequena-home">
     <div class="title-bar">
       <img src="assets/home.png" alt="Logo" class="logo">
@@ -83,7 +173,9 @@
       </ul>
     </div>
   </div>
+  <!-- </End of Pequena Home app> -->
 
+  <!-- Pequena Documentation app -->
   <div class="application" id="pequena-docs">
     <div class="title-bar">
       <img src="assets/home.png" alt="Logo" class="logo">
@@ -97,6 +189,7 @@
     <div class="app-content">
       <div class="navBar">
         <ul class="topList">
+
           <li data-section="quick-start">
             <div class="name active" onclick="clickedNavBar(this.parentNode)">Quick Start</div>
             <ul class="nestedList firstList">
@@ -126,7 +219,6 @@
 
           <li data-section="window-api">
             <div class="name" onclick="clickedNavBar(this.parentNode)">Window API</div>
-
             <ul class="nestedList">
               <li onclick="moveToSection(this.parentNode.parentNode, this)">on_top</li>
               <li onclick="moveToSection(this.parentNode.parentNode, this)">width</li>
@@ -144,7 +236,28 @@
             </ul>
           </li>
 
+          <li data-section="javascript-api">
+            <div class="name" onclick="clickedNavBar(this.parentNode)">Javascript API</div>
+            <ul class="nestedList">
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">__Node__</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">__Pequena__</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">__Exposed__</li>
+            </ul>
+          </li>
 
+          <li data-section="settings-json">
+            <div class="name" onclick="clickedNavBar(this.parentNode)">Settings.json</div>
+            <ul class="nestedList">
+            </ul>
+          </li>
+          <li data-section="npm-scripts">
+            <div class="name" onclick="clickedNavBar(this.parentNode)">NPM Scripts</div>
+            <ul class="nestedList">
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">npm run start</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">npm run dev</li>
+              <li onclick="moveToSection(this.parentNode.parentNode, this)">npm run build</li>
+            </ul>
+          </li>
         </ul>
       </div>
 
@@ -154,6 +267,10 @@
       <div class="container">
 
         <div id="quick-start" class="docs-section">
+          <div class="topLogo">
+            <div class="pequenaLogo"></div>
+            <p class="versioning">v1.0.1</p>
+          </div>
           <h3 id="prerequisites">Prerequisites</h3>
           <p class="plainText">Before you begin, there are a few things you'll need to make sure you have installed on
             your
@@ -192,8 +309,7 @@
             <li onclick="selectedLi(this)">yarn</li>
             <li onclick="selectedLi(this)">pnpm</li>
           </ul>
-          <pre><code class="language-shell" id="installCodeBlock">$ sh <(curl https://create.tauri.app/sh)</code></pre>
-
+          <pre><code class="language-npm" id="installCodeBlock">$ sh <(curl some_link)</code></pre>
 
           <h3 id="hello-world">Hello World!</h3>
           <p class="plainText">
@@ -220,6 +336,10 @@ window = Pequena.init_window()</code></pre>
 
 
         <div id="pequena-api" class="docs-section">
+          <div class="topLogo">
+            <div class="pequenaLogo"></div>
+            <p class="versioning">v1.0.1</p>
+          </div>
           <h3 id="init_window">init_window()</h3>
 
 
@@ -255,6 +375,11 @@ Pequena.expose_function(hello_py)</code></pre>
 
 
         <div id="window-api" class="docs-section">
+          <div class="topLogo">
+            <div class="pequenaLogo"></div>
+            <p class="versioning">v1.0.1</p>
+          </div>
+
           <h3 id="on_top">on_top</h3>
           <p class="plainText">Get or set whether the window is always on top.</p>
           <pre><code class="language-python">window = init_window()</code></pre>
@@ -271,22 +396,306 @@ Pequena.expose_function(hello_py)</code></pre>
           <p class="plainText">Get x and y coordinates of the pequena window.</p>
           <pre><code class="language-python">window.position</code></pre>
 
-
           <h3 id="destroy">destroy</h3>
           <p class="plainText">Get width of the pequena window.</p>
           <pre><code class="language-python">window.destroy()</code></pre>
 
+          <h3 id="hide">hide</h3>
+          <p class="plainText">Hide the window.</p>
+          <pre><code class="language-python">window.hide()</code></pre>
 
+          <h3 id="minimize">minimize</h3>
+          <p class="plainText">Minimize window.</p>
+          <pre><code class="language-python">window.minimize()</code></pre>
 
+          <h3 id="move">move</h3>
+          <p class="plainText">Move window to a new position.</p>
+          <pre><code class="language-python">window.move(x, y)</code></pre>
+
+          <h3 id="resize">resize</h3>
+          <p class="plainText">Resize window.</p>
+          <pre><code class="language-python">window.resize(width, height)</code></pre>
+
+          <h3 id="restore">restore</h3>
+          <p class="plainText">Restore minimized window.</p>
+          <pre><code class="language-python">window.restore()</code></pre>
+
+          <h3 id="set_title">set_title</h3>
+          <p class="plainText">Change the title of the window.</p>
+          <pre><code class="language-python">window.set_title()</code></pre>
+
+          <h3 id="show">show</h3>
+          <p class="plainText">Show the window if it is hidden. Has no effect otherwise.</p>
+          <pre><code class="language-python">window.show()</code></pre>
+
+          <h3 id="toggle_fullscreen">toggle_fullscreen</h3>
+          <p class="plainText">Toggle fullscreen mode.</p>
+          <pre><code class="language-python">window.toggle_fullscreen()</code></pre>
 
         </div>
 
+        <div id="javascript-api" class="docs-section">
+          <div class="topLogo">
+            <div class="pequenaLogo"></div>
+            <p class="versioning">v1.0.1</p>
+          </div>
+          <div id="__node__">
+            <h3>__Node__</h3>
+            <p class="plainText">In addition to the Python Pequena API, the Pequena framework also provides a way to
+              access "backend" Node.js modules directly from your browser-based JavaScript code. This allows you to
+              leverage the power and functionality of Node.js modules in your web applications.</p>
+
+            <p class="plainText">To access these "backend" Node modules, you can use the <span
+                class="colorHighlights">__Node__</span> object provided by
+              Pequena. The Node object acts as a bridge between your browser-based code and the Node.js environment.
+              Currently, a few commonly used Node.js modules, such as fs, child_process, and path, have been implemented
+              and are available through the Node object. </p>
+
+            <h3>fs</h3>
+
+            <h5>readFile(path)</h5>
+            <p class="plainText">Reads the content of a file.</p>
+            <pre><code class="language-javascript">__Node__.fs.readFile("database.txt")</code></pre>
+
+            <h5>writeFile(path, content)</h5>
+            <p class="plainText">Writes content to a file.</p>
+            <pre><code class="language-javascript">__Node__.fs.writeFile("database.txt", "Hello, World!")</code></pre>
+
+            <h5>mkdir(path)</h5>
+            <p class="plainText">Creates a new directory.</p>
+            <pre><code class="language-javascript">__Node__.fs.mkdir("new_directory")</code></pre>
+
+            <h5>readdir(path)</h5>
+            <p class="plainText">Lists all files and directories in a directory.</p>
+            <pre><code class="language-javascript">__Node__.fs.readdir("my_directory")</code></pre>
+
+            <h5>pathExists(path)</h5>
+            <p class="plainText">Checks if a path exists.</p>
+            <pre><code class="language-javascript">__Node__.fs.pathExists("file.txt")</code></pre>
+
+            <h5>isfile(path)</h5>
+            <p class="plainText">Checks if a path is a file.</p>
+            <pre><code class="language-javascript">__Node__.fs.isfile("file.txt")</code></pre>
+
+            <h5>isdir(path)</h5>
+            <p class="plainText">Checks if a path is a directory.</p>
+            <pre><code class="language-javascript">__Node__.fs.isdir("my_directory")</code></pre>
+
+            <h3>path</h3>
+            <h5>join(...paths)</h5>
+            <p class="plainText">Joins multiple paths into a single path.</p>
+            <pre><code class="language-javascript">__Node__.path.join("folder", "file.txt")</code></pre>
+
+            <h5>basename(path)</h5>
+            <p class="plainText">Gets the base name of a path.</p>
+            <pre><code class="language-javascript">__Node__.path.basename("/path/to/file.txt")</code></pre>
+
+            <h5>dirname(path)</h5>
+            <p class="plainText">Gets the directory name of a path.</p>
+            <pre><code class="language-javascript">__Node__.path.dirname("/path/to/file.txt")</code></pre>
+
+            <h5>resolve(...paths)</h5>
+            <p class="plainText">Resolves a path into an absolute path.</p>
+            <pre><code class="language-javascript">__Node__.path.resolve("folder", "file.txt")</code></pre>
+
+
+
+          </div>
+
+          <div id="__pequena__">
+            <h3>__Pequena__</h3>
+            <p class="plainText">The <span class="colorHighlights"> __Pequena__</span> class is a powerful tool provided
+              by the
+              Pequena framework that allows you
+              to modify and customize the Pequena window directly from your browser-based JavaScript code. This means
+              that you can dynamically update the appearance and behavior of your application's window directly from
+              JavaScript.</p>
+
+            <h5>getWindowInfo()</h5>
+            <p class="plainText">Retrieves information about the Pequena window.</p>
+            <pre><code class="language-javascript">__Pequena__.getWindowInfo()</code></pre>
+            <p class="plainText">Returns object containing these values:</p>
+            <pre><code class="language-javascript">{
+    x: active_window.x,
+    y: active_window.y,
+    width: active_window.width,
+    height: active_window.height
+}</code></pre>
+            <h5>minimizeWindow()</h5>
+            <p class="plainText">Minimizes the Pequena window.</p>
+            <pre><code class="language-javascript">__Pequena__.minimizeWindow()</code></pre>
+
+            <h5>unminimizeWindow()</h5>
+            <p class="plainText">Restores the Pequena window from a minimized state.</p>
+            <pre><code class="language-javascript">__Pequena__.unminimizeWindow()</code></pre>
+
+            <h5>hideWindow()</h5>
+            <p class="plainText">Hides the Pequena window.</p>
+            <pre><code class="language-javascript">__Pequena__.hideWindow()</code></pre>
+
+            <h5>unhideWindow()</h5>
+            <p class="plainText">Shows the hidden Pequena window.</p>
+            <pre><code class="language-javascript">__Pequena__.unhideWindow()</code></pre>
+
+            <h5>toggleFullscreen()</h5>
+            <p class="plainText">Toggles the Pequena window between fullscreen and normal mode.</p>
+            <pre><code class="language-javascript">__Pequena__.toggleFullscreen()</code></pre>
+
+            <h5>moveWindow(x, y)</h5>
+            <p class="plainText">Moves the Pequena window to the specified coordinates.</p>
+            <pre><code class="language-javascript">__Pequena__.moveWindow(x, y)</code></pre>
+
+            <h5>resizeWindow(width, height)</h5>
+            <p class="plainText">Resizes the Pequena window to the specified dimensions.</p>
+            <pre><code class="language-javascript">__Pequena__.resizeWindow(width, height)</code></pre>
+
+            <h5>setWindowName(name)</h5>
+            <p class="plainText">Sets the title of the Pequena window.</p>
+            <pre><code class="language-javascript">__Pequena__.setWindowName("My Pequena App")</code></pre>
+
+
+          </div>
+
+          <div id="__exposed__">
+            <h3>__Exposed__</h3>
+            <p class="plainText">The <span class="colorHighlights">__Exposed__</span> object serves as a container for
+              all the functions that you choose to
+              expose from Python to the browser. This feature allows you to bridge the gap between your Python backend
+              and your browser-based JavaScript code, enabling seamless communication and interaction between the two.
+            </p>
+
+            <p class="plainText">To expose a function from Python to the browser, you can use the
+              <span class="colorHighlights">Pequena.expose_functions()</span> method. This method takes a Python
+              function as an argument and makes it
+              accessible from the browser via the <span class="colorHighlights">__Exposed__</span> object.
+            </p>
+
+            <p class="plainText"> Here's an example of how you can expose a Python function and access it from the
+              browser:</p>
+
+            <pre><code class="language-python">def hello_py():
+    print("Hello from Python!")
+            
+Pequena.expose_functions(hello_py)</code></pre>
+
+            <p class="plainText">In the above example, the <span class="colorHighlights">hello_py()</span> function is
+              exposed using
+              <span class="colorHighlights">Pequena.expose_functions(hello_py)</span>. This function can
+              now be accessed from the browser using the <span class="colorHighlights">__Exposed__.hello_py()</span>.
+              syntax.
+            </p>
+
+            <pre><code class="language-javascript">__Exposed__.hello_py();</code></pre>
+
+            <p class="plainText">When executed, this JavaScript code will trigger the <span
+                class="colorHighlights">hello_py()</span> function in Python,
+              which will print the message "Hello from Python!".</p>
+
+            <p class="plainText">By exposing functions from Python to the browser, you can leverage the power and
+              capabilities of both Python and JavaScript in your Pequena web application. This allows you to seamlessly
+              integrate backend functionality with frontend interactivity, creating a more dynamic and engaging user
+              experience.</p>
+
+            <p class="plainText">Please note that you can expose multiple functions from Python, and each function will
+              be accessible through the <span class="colorHighlights">__Exposed__</span> object using its respective
+              name. Remember to ensure the functions
+              you expose are designed to be safely executed in a browser context and consider any security implications
+              when exposing sensitive functionality.</p>
+
+
+          </div>
+        </div>
+
+        <div id="settings-json" class="docs-section">
+          <div class="topLogo">
+            <div class="pequenaLogo"></div>
+            <p class="versioning">v1.0.1</p>
+          </div>
+          <h3>Settings.json</h3>
+          <p class="plainText">The <span class="colorHighlights">settings.json</span> file is a configuration file used
+            by the Pequena framework to define and initialize default settings for the Pequena window. It allows you to
+            specify various properties that define the initial appearance and behavior of the window when your Pequena
+            application starts.</p>
+
+          <p class="plainText">Here is an example of a <span class="colorHighlights">settings.json</span> file and its
+            properties:</p>
+
+          <pre><code class="language-javascript">{
+    "title": "Hello world!",
+    "src": "./client/index.html",
+    "width": 800,
+    "height": 600,
+    "x": "center",
+    "y": "center",
+    "min_x": 200,
+    "min_y": 100,
+    "resizable": true,
+    "fullscreen": false,
+    "hidden": false,
+    "frameless": false,
+    "easy_drag": true,
+    "minimized": false,
+    "on_top": false,
+    "confirm_close": false,
+    "background_color": "#FFFFFF",
+    "transparent": false,
+    "text_select": false,
+    "zoomable": false,
+    "draggable": false,
+    "debug": false
+}</code></pre>
+          <p class="plainText"><span class="colorHighlights">These are the default properties that can be changed in the
+              settings.json file. </span></p>
+
+          <p class="plainText">By customizing the values in the settings.json file, you can ensure that the Pequena
+            window starts with the
+            desired settings, providing a consistent and tailored user experience for your Pequena web application.</p>
+        </div>
+        <div id="npm-scripts" class="docs-section">
+          <div class="topLogo">
+            <div class="pequenaLogo"></div>
+            <p class="versioning">v1.0.1</p>
+          </div>
+          <h3>npm-scripts</h3>
+          <p class="plainText">
+            To facilitate the development and deployment of your Pequena application, several useful scripts are
+            available. These scripts streamline the process of starting the window, enabling hot-reloading for efficient
+            development, and building the application into an executable bundle.
+          </p>
+          <h5 id="npm-run-start">npm run start</h5>
+          <p class="plainText">
+            To facilitate the development and deployment of your Pequena application, several useful scripts are
+            available. These scripts streamline the process of starting the window, enabling hot-reloading for efficient
+            development, and building the application into an executable bundle.
+          </p>
+          <pre><code class="language-npm">npm run start</code></pre>
+
+          <h5 id="npm-run-dev">npm run dev</h5>
+          <p class="plainText">
+            Similar to npm run start, this script also starts the Pequena window. However, it provides an additional
+            benefit for developers by enabling hot-reloading functionality. With hot-reloading, any changes made to the
+            source code or frontend files in the client/ directory are automatically detected, triggering a reload of
+            the Pequena window. This feature significantly speeds up the development process, allowing you to see the
+            changes immediately without manually restarting the application.
+          </p>
+          <pre><code class="language-npm">npm run dev</code></pre>
+          <h5 id="npm-run-build">npm run build</h5>
+          <p class="plainText">
+            This script is used to build your Pequena application into an executable bundle. It packages all the
+            necessary dependencies, source code, and frontend assets into a standalone executable file. This executable
+            file can then be distributed and run on other machines without the need for a development environment or
+            additional setup.
+          </p>
+          <pre><code class="language-npm">npm run build</code></pre>
+        </div>
       </div>
     </div>
   </div>
+  <!-- </End of Pequena Documentation app> -->
 
 
 
+  <!-- Pequena Versioning -->
   <div class="application" id="pequena-info">
     <div class="title-bar">
       <img src="assets/home.png" alt="Logo" class="logo">
@@ -328,6 +737,9 @@ Pequena.expose_function(hello_py)</code></pre>
       </ul>
     </div>
   </div>
+  <!-- </End of Pequena Versioning> -->
+
+
 </body>
 
 </html>

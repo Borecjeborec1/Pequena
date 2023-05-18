@@ -2,6 +2,7 @@
 
 $red: #FF5A5F;
 $yellow: #FFB948;
+$teal:#00A699;
 $white:#FFFFFF;
 $dark: #1E1E1E;
 $scrollBar: #353535;
@@ -80,8 +81,8 @@ body {
   height: 600px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   resize: both;
+  overflow: hidden;
 
   &:not(#pequena-home) {
     display: none;
@@ -203,6 +204,7 @@ body {
           font-weight: bold;
         }
       }
+
     }
 
 
@@ -217,27 +219,83 @@ body {
 
     }
   }
+
+  a {
+    color: $red;
+  }
+
+
 }
 
-#pequena-docs {
-  .title-bar {
-    background-color: $yellow;
+::selection {
+  background-color: #53535379;
+}
+
+pre {
+  position: relative;
+
+  .copy-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
   }
+
+  .copied {
+    color: green;
+  }
+
+}
+
+
+#pequena-docs {
+
+  .title-bar {
+    background-color: $teal;
+  }
+
+  height: 781px;
+  width: 1322px;
 
   .container {
     width: 60%;
     position: relative;
     margin: 0 18% 0 auto;
 
+    .topLogo {
+      margin-bottom: -2rem;
+
+      .pequenaLogo {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        margin: auto;
+        background-image: url(../assets/PequenaLogoTeal.svg);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        top: 1.5rem;
+      }
+
+      .versioning {
+        margin: auto;
+        position: relative;
+        width: fit-content;
+        left: 3rem;
+        font-size: 1.2rem;
+        top: -0.8rem;
+      }
+    }
+
     h1 {
-      color: $yellow;
+      color: $teal;
       font-size: 90px;
     }
 
     h3 {
       font-size: 1.4rem;
       margin: 1.5rem 0;
-      color: $yellow;
+      color: $teal;
       scroll-margin: 1rem;
     }
 
@@ -249,6 +307,7 @@ body {
     .plainText {
       margin-left: 2rem;
       padding: .5rem 0;
+      line-height: 1.7;
     }
 
     code {
@@ -258,7 +317,7 @@ body {
     }
 
     .colorHighlights {
-      color: $yellow;
+      color: $teal;
     }
 
     ul {
@@ -274,18 +333,39 @@ body {
       }
 
       .selected {
-        border-bottom: 2px solid $yellow;
-        color: $yellow;
+        border-bottom: 2px solid $teal;
+        color: $teal;
       }
     }
   }
 
   .navBar {
-    width: 150px;
-    height: auto;
+    max-height: 90%;
+    width: fit-content;
+    min-width: 150px;
+    height: fit-content;
     padding: 20px;
     box-sizing: border-box;
     position: fixed;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: all 1s ease;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $scrollBar;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: $dark;
+    }
 
     .topList {
       list-style: none;
@@ -325,7 +405,7 @@ body {
       }
 
       .active {
-        color: $yellow;
+        color: $teal;
         font-weight: bold;
       }
     }
@@ -338,4 +418,5 @@ body {
   #quick-start {
     display: block;
   }
+
 }

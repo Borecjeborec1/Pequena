@@ -71,8 +71,8 @@ body {
   height: 600px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   resize: both;
+  overflow: hidden;
 }
 .application:not(#pequena-home) {
   display: none;
@@ -192,23 +192,74 @@ body {
   margin: 2rem auto;
   line-height: 1.8;
 }
+.application a {
+  color: #FF5A5F;
+}
 
+::-moz-selection {
+  background-color: rgba(83, 83, 83, 0.4745098039);
+}
+
+::selection {
+  background-color: rgba(83, 83, 83, 0.4745098039);
+}
+
+pre {
+  position: relative;
+}
+pre .copy-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+pre .copied {
+  color: green;
+}
+
+#pequena-docs {
+  height: 781px;
+  width: 1322px;
+}
 #pequena-docs .title-bar {
-  background-color: #FFB948;
+  background-color: #00A699;
 }
 #pequena-docs .container {
   width: 60%;
   position: relative;
   margin: 0 18% 0 auto;
 }
+#pequena-docs .container .topLogo {
+  margin-bottom: -2rem;
+}
+#pequena-docs .container .topLogo .pequenaLogo {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin: auto;
+  background-image: url(../assets/PequenaLogoTeal.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  top: 1.5rem;
+}
+#pequena-docs .container .topLogo .versioning {
+  margin: auto;
+  position: relative;
+  width: -moz-fit-content;
+  width: fit-content;
+  left: 3rem;
+  font-size: 1.2rem;
+  top: -0.8rem;
+}
 #pequena-docs .container h1 {
-  color: #FFB948;
+  color: #00A699;
   font-size: 90px;
 }
 #pequena-docs .container h3 {
   font-size: 1.4rem;
   margin: 1.5rem 0;
-  color: #FFB948;
+  color: #00A699;
   scroll-margin: 1rem;
 }
 #pequena-docs .container h5 {
@@ -218,6 +269,7 @@ body {
 #pequena-docs .container .plainText {
   margin-left: 2rem;
   padding: 0.5rem 0;
+  line-height: 1.7;
 }
 #pequena-docs .container code {
   border-radius: 10px;
@@ -225,7 +277,7 @@ body {
   margin-left: 2rem;
 }
 #pequena-docs .container .colorHighlights {
-  color: #FFB948;
+  color: #00A699;
 }
 #pequena-docs .container ul {
   margin-left: 2rem;
@@ -239,15 +291,35 @@ body {
   font-weight: bold;
 }
 #pequena-docs .container ul .selected {
-  border-bottom: 2px solid #FFB948;
-  color: #FFB948;
+  border-bottom: 2px solid #00A699;
+  color: #00A699;
 }
 #pequena-docs .navBar {
-  width: 150px;
-  height: auto;
+  max-height: 90%;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 150px;
+  height: -moz-fit-content;
+  height: fit-content;
   padding: 20px;
   box-sizing: border-box;
   position: fixed;
+  padding: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: all 1s ease;
+}
+#pequena-docs .navBar::-webkit-scrollbar {
+  width: 6px;
+}
+#pequena-docs .navBar::-webkit-scrollbar-thumb {
+  background-color: #353535;
+  border-radius: 5px;
+}
+#pequena-docs .navBar::-webkit-scrollbar-track {
+  background-color: #1E1E1E;
 }
 #pequena-docs .navBar .topList {
   list-style: none;
@@ -284,7 +356,7 @@ body {
   display: block;
 }
 #pequena-docs .navBar .topList .active {
-  color: #FFB948;
+  color: #00A699;
   font-weight: bold;
 }
 #pequena-docs .docs-section {

@@ -1,5 +1,8 @@
 const appWindows = document.querySelectorAll(".application")
 const appTops = document.querySelectorAll(".title-bar")
+const pequenaDocs = document.querySelector('#pequena-docs');
+const navBar = document.querySelector('.navBar');
+const codeBlocks = document.querySelectorAll('pre code');
 
 let pos1 = 0
 let pos2 = 0
@@ -11,16 +14,17 @@ let isMouseDown = false
 const LEFT_TRESHOLD = -50
 const SMALL_WINDOW = { width: "900px", height: "600px" }
 
-for (let i = 0; i < appTops.length; ++i) {
-  appTops[i].addEventListener("mousedown", e => {
-    windowId = i
-    bringWindowToFront(appWindows[windowId])
-    dragMouseDown(e)
-  })
-  appWindows[i].addEventListener("click", (e) => {
-    bringWindowToFront(appWindows[i]);
-  });
+const VERSION = "1.0.1"
+const INSTALL_MAP = {
+  "bash": "$ sh <(curl some_link)",
+  "npm": "$ npm i pequena",
+  "git": "$ git clone some_link",
+  "yarn": "$ yarn add pequena",
+  "pnpm": "$ pnpm i pequena",
 }
+
+
+
 function dragMouseDown(e) {
   e = e || window.event;
   e.preventDefault();
@@ -31,13 +35,6 @@ function dragMouseDown(e) {
   document.onmouseup = closeDragElement;
 }
 
-document.addEventListener("mouseshake", function (e) {
-  if (isMouseDown)
-    for (let i = 0; i < appWindows.length; ++i) {
-      if (i !== windowId)
-        appWindows[i].style.display = "none"
-    }
-});
 function elementDrag(e) {
   e = e || window.event;
   e.preventDefault();
@@ -110,31 +107,34 @@ function maximizeWindow(el) {
   }
 }
 
-const INSTALL_MAP = {
-  "bash": "$ sh <(curl https://create.tauri.app/sh)",
-  "npm": "$ npm i pequena",
-  "git": "$ git clone some_repo",
-  "yarn": "$ yarn add pequena",
-  "pnpm": "$ pnpm i pequena",
-}
 
 function selectedLi(el) {
   document.getElementById("installList").querySelector(".selected").classList.remove("selected")
   el.classList.add("selected")
   document.getElementById("installCodeBlock").textContent = INSTALL_MAP[el.textContent]
-  hljs.highlightAll();
+  hljs.highlightElement(document.getElementById("installCodeBlock"));
 }
 
 
 function clickedNavBar(el) {
+  console.log(el)
   let nested = el.querySelector(".nestedList")
   let newDocs = document.getElementById(el.dataset.section)
+  let isOnlyClosing = el.querySelector(".name").classList.contains("active")
   document.querySelectorAll(".docs-section").forEach(el => el.style.display = "none")
   document.querySelectorAll(".nestedList").forEach(el => el.style.display = "none")
   newDocs.style.display = "block"
+  el.parentNode.parentNode.parentNode.scrollTo({ top: 100, left: 100, behavior: 'smooth' })
   document.querySelectorAll(".active").forEach(el => el.classList.remove("active"))
+  if (isOnlyClosing)
+    return
   el.querySelector(".name").classList.add("active")
-  newDocs.scrollTo({ top: 100, left: 100, behavior: 'smooth' });
+  nested.style.display = "block"
+}
+
+function clickedNestedNavBar(el) {
+  let nested = el.querySelector(".nestedList")
+  el.querySelector(".name").classList.add("active")
   nested.style.display = "block"
 }
 
@@ -148,6 +148,34 @@ function moveToSection(parentNode, el) {
     behavior: 'smooth'
   })
 }
+
+
+function handleCopyBlocks() {
+  function copyCode(event) {
+    let codeBlock = event.target.parentElement;
+    let codeText = codeBlock.textContent;
+
+    navigator.clipboard.writeText(codeText).then(() => {
+      event.target.className = "copy-icon  fas fa-check copied ";
+
+      setTimeout(() => {
+        event.target.className = "copy-icon  far fa-copy";
+      }, 2000);
+    }).catch(() => {
+      console.error('Failed to copy code.');
+    });
+  }
+
+  codeBlocks.forEach((codeBlock) => {
+    let copyIcon = document.createElement('i');
+    copyIcon.className += 'copy-icon far fa-copy ';
+    copyIcon.addEventListener('click', copyCode);
+
+    codeBlock.parentElement.insertBefore(copyIcon, codeBlock.nextSibling);
+  });
+}
+
+
 
 function parseString(_str) {
   return _str.trim().toLowerCase().replace(/[^\w\s]/gi, '').replace(/ /g, "-")
@@ -175,5 +203,55 @@ function updateClock() {
   let timeString = hours + ':' + minutes + ':' + seconds;
   document.getElementById('clock').textContent = timeString;
 }
-updateClock()
-setInterval(updateClock, 1000);
+
+
+function handleDocsSize() {
+  function outputsize() {
+    if (+pequenaDocs.style.width.replace("px", "") < 900 && +pequenaDocs.style.width.replace("px", "") != 0)
+      navBar.style.display = "none"
+    else
+      navBar.style.display = "block"
+  }
+
+  new ResizeObserver(outputsize).observe(pequenaDocs)
+}
+
+window.onload = main
+
+function main() {
+  updateClock()
+  setInterval(updateClock, 1000);
+  document.querySelectorAll(".versioning").forEach(e => e.textContent = VERSION)
+  handleDocsSize()
+  handleCopyBlocks()
+  for (let i = 0; i < appTops.length; ++i) {
+    appTops[i].addEventListener("mousedown", e => {
+      windowId = i
+      bringWindowToFront(appWindows[windowId])
+      dragMouseDown(e)
+    })
+    appWindows[i].addEventListener("click", (e) => {
+      bringWindowToFront(appWindows[i]);
+    });
+  }
+
+  document.addEventListener("mouseshake", function (e) {
+    if (isMouseDown)
+      for (let i = 0; i < appWindows.length; ++i) {
+        if (i !== windowId)
+          appWindows[i].style.display = "none"
+      }
+  });
+}
+
+
+/**
+ * Main color: #FF5A5F (a bright and energetic red)
+ * Background color: #1E1E1E (a deep and rich black)
+ * Accent color: #FFB948 (a warm and inviting yellow)
+ * Text color: #FFFFFF (a crisp and clean white)
+ * 
+ * Secondary color: #00A699 (a cool and refreshing teal)
+ * Neutral color 1: #D5D5D5 (a light and subtle gray)
+ * Neutral color 2: #9B9B9B (a darker and more pronounced gray)
+ */
