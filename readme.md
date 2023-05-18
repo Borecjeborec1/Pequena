@@ -2,6 +2,8 @@
 Pequena is a desktop creation framework that allows you to create desktop applications using web technologies such as HTML, CSS, and JavaScript. It is built on top of the [webview](https://pypi.org/project/pywebview/) library for Python.
 It is supposed to be lightweight and easy to use, while keeping all the complex stuff.
 
+**Visit website:[Pequena](https://pequena.netlify.app/)**
+
 ## Installation
 Pequena can be installed using npm
 ```bash
