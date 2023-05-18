@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build:website": "cd website && node helpers/buildIndex.js",
+    "push": "node helpers/changelog.js",
     "build:py": "cd module/ && python setup.py sdist bdist_wheel",
     "publish:py": "cd module/ && twine upload dist/*",
     "full:py": "node helpers/pythonPublish.js && npm run build:py && npm run publish:py",
