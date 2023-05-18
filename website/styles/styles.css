@@ -364,4 +364,34 @@ pre .copied {
 }
 #pequena-docs #quick-start {
   display: block;
+}
+
+#pequena-info .title-bar {
+  background-color: #FFB948;
+}
+#pequena-info .app-content {
+  text-align: center;
+}
+#pequena-info .app-content h1 {
+  color: #FFB948;
+  font-size: 60px;
+}
+#pequena-info .app-content h3 {
+  font-size: 1.4rem;
+  margin: 1.5rem 0;
+  color: #FFB948;
+  scroll-margin: 1rem;
+}
+#pequena-info .app-content h5 {
+  font-size: 1.1rem;
+  margin: 1rem;
+}
+#pequena-info .app-content ul {
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: auto;
+}
+#pequena-info .app-content a {
+  color: #FFB948;
 }/*# sourceMappingURL=styles.css.map */

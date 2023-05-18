@@ -420,3 +420,42 @@ pre {
   }
 
 }
+
+#pequena-info {
+  .title-bar {
+    background-color: $yellow;
+  }
+
+  .app-content {
+    text-align: center;
+
+    h1 {
+      color: $yellow;
+      font-size: 60px;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin: 1.5rem 0;
+      color: $yellow;
+      scroll-margin: 1rem;
+    }
+
+    h5 {
+      font-size: 1.1rem;
+      margin: 1rem;
+    }
+
+    ul {
+      display: block;
+      width: fit-content;
+      margin: auto;
+    }
+
+    a {
+      color: $yellow;
+    }
+
+
+  }
+}
