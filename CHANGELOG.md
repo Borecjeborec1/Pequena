@@ -1,4 +1,13 @@
 # Changelog
+#### [1.1.5] - 2023-05-19
+
+[Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
+
+##### Implemented enhancements:
+- included the ability to add custom py_modules inside settings 
+
+##### Fixed bugs:
+
 #### [1.1.4] - 2023-05-19
 
 [Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)

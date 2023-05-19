@@ -20,5 +20,6 @@
   "text_select": false,
   "zoomable": false,
   "draggable": false,
-  "debug":false 
+  "debug":false,
+  "py_modules":[]
 }

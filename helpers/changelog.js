@@ -1,6 +1,11 @@
 const fs = require('fs');
-const changelogPath = 'CHANGELOG.md';
+const { execSync, spawnSync } = require('child_process');
 
+const changelogPath = 'CHANGELOG.md';
+const { flag, message } = parseArguments(process.argv.slice(2));
+
+const { version } = require("../package.json");
+const npmJSON = require("../NPM/package.json");
 function updateChangelog(version, message, type) {
   const changelogContent = fs.readFileSync(changelogPath, 'utf8').split("#### [");
   const currentDate = new Date().toISOString().split('T')[0];
@@ -56,16 +61,15 @@ function parseArguments(args) {
   return { flag, message }
 }
 
-const { flag, message } = parseArguments(process.argv.slice(2));
 
-const { version } = require("../package.json");
-const npmJSON = require("../NPM/package.json");
-if (npmJSON.version != version) {
-  npmJSON.version = version
-  fs.writeFileSync("./NPM/package.json", JSON.stringify(npmJSON))
-}
-const { execSync } = require('child_process');
+
 if (flag == "/feature" || flag == "/bugfix" && message && version) {
+
+  if (npmJSON.version != version) {
+    npmJSON.version = version
+    fs.writeFileSync("./NPM/package.json", JSON.stringify(npmJSON))
+    spawnSync(`cd NPM && npm publish`, [], { shell: true })
+  }
 
   fs.writeFileSync(changelogPath, updateChangelog(version, message, flag))
   execSync(`gp ${message}`)

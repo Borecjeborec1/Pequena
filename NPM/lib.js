@@ -38,7 +38,7 @@ const BASE_SCRIPT = `
         const __Exposed__ = pywebview.api.exposed
 `;
 
-const BASE_STYLE = ``;
+let filesToDelete = []
 
 
 
@@ -61,6 +61,12 @@ function buildMain() {
   data = data.replace(/^.*Pequena\.init_window\(.*/gm, `Pequena.init_window(${PYTHON_ARGS})`)
   data += PYTHON_START
   fs.writeFileSync("./Pequena/main.py", data)
+}
+
+function handleUserPyModules(modules) {
+  for (let module of modules) {
+    spawnInEnv(`pip install ${module}`, true)
+  }
 }
 
 
@@ -131,6 +137,8 @@ async function checkForEnv() {
     let res = await execSync(`${pyPath} -m venv Pequena`);
     return res
   }
+  let { py_modules } = JSON.parse(fs.readFileSync("./settings.json"))
+  handleUserPyModules(py_modules)
   return true
 }
 
@@ -157,7 +165,6 @@ function killProcess(_pid, sync = false) {
 
 
 
-let filesToDelete = []
 function checkForModules(jsPath) {
   const scriptDir = path.dirname(jsPath);
   filesToDelete.push(jsPath)
@@ -198,8 +205,6 @@ function buildClient() {
   const htmlContent = fs.readFileSync(clientHtml, "utf-8");
   let isScriptOpen = false;
   const lines = htmlContent.split("\n");
-
-
 
   for (let line of lines) {
     if (line.includes("<script")) {
@@ -250,12 +255,10 @@ function buildClient() {
 }
 
 
-
 function copyFolderSync(source, target) {
   if (!fs.existsSync(target)) {
     fs.mkdirSync(target);
   }
-
   const files = fs.readdirSync(source);
   files.forEach((file) => {
     const sourcePath = path.join(source, file);
