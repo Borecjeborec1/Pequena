@@ -3,6 +3,8 @@ const path = require("path");
 const fs = require("fs");
 
 let HTML_NAME = "index.html"
+const BUILD_DIR = "./Pequena/build/";
+
 
 const DEFAULT_VALUES = {
   "title": "Hello world!",
@@ -28,7 +30,19 @@ const DEFAULT_VALUES = {
   "draggable": false,
   "debug": false
 }
+const BASE_SCRIPT = `
+<script>
+    window.addEventListener('pywebviewready', function () {
+        const __Pequena__ = pywebview.api.PequenaApi;
+        const __Node__ = pywebview.api.NodeApi
+        const __Exposed__ = pywebview.api.exposed
+`;
 
+const BASE_STYLE = ``;
+
+
+
+// Used to build the main.py file.
 function buildMain() {
   let settings = JSON.parse(fs.readFileSync("./settings.json"))
   for (let key in DEFAULT_VALUES) {
@@ -119,6 +133,7 @@ async function checkForEnv() {
   }
   return true
 }
+
 async function checkForPequena() {
   if (!fs.existsSync(path.join(__dirname, "Lib", "site-packages", "Pequena"))) {
     console.log("Installing Pequena")
@@ -141,16 +156,11 @@ function killProcess(_pid, sync = false) {
 }
 
 
-const BASE_SCRIPT = `
-<script>
-    window.addEventListener('pywebviewready', function () {
-        const __Pequena__ = pywebview.api.PequenaApi;
-        const __Node__ = pywebview.api.NodeApi
-        const __Exposed__ = pywebview.api.exposed
-`;
 
+let filesToDelete = []
 function checkForModules(jsPath) {
   const scriptDir = path.dirname(jsPath);
+  filesToDelete.push(jsPath)
   let scriptStr = "";
   const scriptContent = fs.readFileSync(jsPath, "utf-8");
 
@@ -161,43 +171,47 @@ function checkForModules(jsPath) {
       const modulePath = path.join(scriptDir, importRegex.exec(line)[1]);
       scriptStr += checkForModules(modulePath);
     } else {
-      if (!line.includes("export {")) {
-        scriptStr += line.replace("export ", "");
-      }
+      if (!line.includes("export  {"))
+        scriptStr += line.replace("export ", "") + "\n";
+
     }
   }
   return scriptStr + "\n";
 }
 
 function buildClient() {
-  let settings = JSON.parse(fs.readFileSync("./settings.json"))
-  let clientHtml = settings.src
-  let clientDir = path.dirname(clientHtml)
-  HTML_NAME = path.basename(clientHtml)
-  let buildDir = "./Pequena/build"
-  let buildHtml = `./Pequena/build/${HTML_NAME}`
+  let settings = JSON.parse(fs.readFileSync("./settings.json"));
+  let clientHtml = settings.src;
+  let clientDir = path.dirname(clientHtml);
+  HTML_NAME = path.basename(clientHtml);
+  let buildHtml = `${BUILD_DIR}/${HTML_NAME}`;
+
   if (!fs.existsSync(clientDir)) {
-    console.log("client dir: " + clientDir + " does not exist")
-    process.exit(1)
+    console.log("Client directory " + clientDir + " does not exist");
+    process.exit(1);
   }
 
-  copyFolderSync(clientDir, buildDir);
+  copyFolderSync(clientDir, BUILD_DIR);
 
   let scriptStr = BASE_SCRIPT;
   let newHtml = "";
   const htmlContent = fs.readFileSync(clientHtml, "utf-8");
   let isScriptOpen = false;
-  const lines = htmlContent.split('\n');
+  const lines = htmlContent.split("\n");
+
+
+
   for (let line of lines) {
     if (line.includes("<script")) {
       if (line.includes("src=")) {
         if (!line.includes("https://") && !line.includes("http://")) {
-          const fileRegex = /(?:href|src)="([^"]+)"/;
+          const fileRegex = /(?:src)="([^"]+)"/;
           const jsPath = path.join(path.dirname(clientHtml), fileRegex.exec(line)[1]);
-          if (line.includes("type=\"module\"")) {
+          if (line.includes('type="module"')) {
             scriptStr += checkForModules(jsPath);
           } else {
             const fileContent = fs.readFileSync(jsPath, "utf-8");
+            filesToDelete.push(jsPath)
             scriptStr += fileContent + "\n";
           }
         } else {
@@ -208,6 +222,12 @@ function buildClient() {
       }
     } else if (line.includes("</script")) {
       isScriptOpen = false;
+    } else if (line.includes("<link") && line.includes("rel=\"stylesheet\"") && line.includes("href=")) {
+      const fileRegex = /(?:href)="([^"]+)"/;
+      const cssPath = path.join(path.dirname(clientHtml), fileRegex.exec(line)[1]);
+      filesToDelete.push(cssPath)
+      const fileContent = fs.readFileSync(cssPath, "utf-8");
+      newHtml += `<style>${fileContent}</style>`;
     } else {
       if (isScriptOpen) {
         scriptStr += line;
@@ -217,10 +237,18 @@ function buildClient() {
     }
   }
 
+
+  scriptStr = scriptStr.replace(/const /g, "var  ") // Prevent redeclaring error
+
   newHtml = newHtml.replace("</body>", scriptStr + "})</script>\n</body>");
+
   fs.writeFileSync(buildHtml, newHtml);
-  projectSrc = buildHtml
+  filesToDelete = [...new Set(filesToDelete)]
+  for (file of filesToDelete) {
+    fs.unlinkSync("./Pequena/" + file.replace("client", "build"))
+  }
 }
+
 
 
 function copyFolderSync(source, target) {
@@ -234,12 +262,12 @@ function copyFolderSync(source, target) {
     const targetPath = path.join(target, file);
     if (fs.lstatSync(sourcePath).isDirectory()) {
       copyFolderSync(sourcePath, targetPath);
-    } else if (path.extname(file) === '.js') { // filter out js files
-
     } else {
-      console.log("Moved " + sourcePath + " to " + targetPath)
+      // console.log("Moved " + sourcePath + " to " + targetPath)
       fs.copyFileSync(sourcePath, targetPath);
     }
+    //else if (path.extname(file) === '.scss'||path.extname(file) === 'css.map') { // filter out  files
+    //}
   });
 }
 

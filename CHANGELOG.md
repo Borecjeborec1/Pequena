@@ -7,6 +7,7 @@
 - automated changelog 
 
 ##### Fixed bugs:
+- incorrect module importing when used module script type 
 
 
 #### [1.1.0] - 2023-05-18
