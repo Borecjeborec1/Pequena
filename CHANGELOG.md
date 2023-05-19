@@ -1,4 +1,12 @@
 # Changelog
+#### [1.1.3] - 2023-05-19
+[Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
+
+##### Implemented enhancements:
+
+##### Fixed bugs:
+- fixed bug with wrong python version downloading 
+
 #### [1.1.1] - 2023-05-18
 
 [Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
