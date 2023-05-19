@@ -58,7 +58,12 @@ function parseArguments(args) {
 
 const { flag, message } = parseArguments(process.argv.slice(2));
 
-const { version } = require("../NPM/package.json");
+const { version } = require("../package.json");
+const npmJSON = require("../NPM/package.json");
+if (npmJSON.version != version) {
+  npmJSON.version = version
+  fs.writeFileSync("./NPM/package.json", JSON.stringify(npmJSON))
+}
 const { execSync } = require('child_process');
 if (flag == "/feature" || flag == "/bugfix" && message && version) {
 
