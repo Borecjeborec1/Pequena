@@ -69,6 +69,7 @@ if (flag == "/feature" || flag == "/bugfix" && message && version) {
     npmJSON.version = version
     fs.writeFileSync("./NPM/package.json", JSON.stringify(npmJSON))
     spawnSync(`cd NPM && npm publish`, [], { shell: true })
+    console.log("Pushed to NPM")
   }
 
   fs.writeFileSync(changelogPath, updateChangelog(version, message, flag))

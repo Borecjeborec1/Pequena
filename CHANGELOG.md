@@ -1,4 +1,13 @@
 # Changelog
+#### [1.1.6] - 2023-05-20
+
+[Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
+
+##### Implemented enhancements:
+- fixed the dev script 
+
+##### Fixed bugs:
+
 #### [1.1.5] - 2023-05-19
 
 [Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)

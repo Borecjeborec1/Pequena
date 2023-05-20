@@ -3,7 +3,7 @@ const { spawnInEnv, checkForEnv, checkForPequena, killProcess } = require("./lib
 checkForEnv()
 checkForPequena()
 
-let pyProcess = spawnInEnv("python main.py");
+const pyProcess = spawnInEnv("python Pequena/main.py");
 
 pyProcess.stdout.on("data", (data) => {
   console.log("Data: " + data.toString());
@@ -14,6 +14,7 @@ pyProcess.stderr.on("data", (data) => {
 });
 
 pyProcess.on('exit', (code, signal) => {
+  console.log(code, signal)
   if (code === 0 && signal === null) {
     console.log(`Python process closed by user. Qutting Dev reload`);
     process.exit();
