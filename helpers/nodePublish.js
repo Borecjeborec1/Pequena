@@ -1,9 +1,13 @@
-const fs = require("fs")
+const fs = require('fs');
+const { spawnSync } = require('child_process');
 
-let pjson = require("../NPM/package.json")
-let numbers = pjson.version.split(".").map(Number)
-numbers[2] += 1
-pjson.version = numbers.join(".")
-console.log(pjson)
+const { version } = require("../package.json");
+const npmJSON = require("../NPM/package.json");
 
-fs.writeFileSync("./NPM/package.json", JSON.stringify(pjson))
+if (npmJSON.version != version) {
+  npmJSON.version = version
+  fs.writeFileSync("./NPM/package.json", JSON.stringify(npmJSON))
+  spawnSync(`cd NPM && npm publish`, [], { shell: true })
+  console.log("Pushed to NPM v" + version)
+}
+

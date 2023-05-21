@@ -4,7 +4,7 @@
 [Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
 
 ##### Implemented enhancements:
-- fixed the dev script 
+- fixed the dev script path
 
 ##### Fixed bugs:
 
