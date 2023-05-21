@@ -11,20 +11,16 @@ npm install pequena
 ```
 
 ## Usage
-After the installation, main.py should appear in your root folder together with Pequena folder.
-Main.py content should look like this:
+After the installation, `main.py` and `settings.json` should appear in your root folder together with `Pequena/` folder.
+`Main.py` content should look like this:
 ```python
 import Pequena
 
-html_file = "client/index.html"
-window_name = "Hello World!"
-
-Pequena.init_window(html_file, window_name)
-
-Pequena.start_window() # This line should be at the end of the file
+window = Pequena.init_window()
 ``` 
 
-Replace the `client/index.html` to an actual client directory and you are ready to go!
+Go to the `settings.json` and change the `src` attribute to an actual client directory and you are ready to go!
+Default value is `./client/index.html`
 PS: Index.html has to be in another folder than main.py. So I highly recommend using `client/` directory where all your frontend lives.
 
 #### Running the app
@@ -34,7 +30,7 @@ npm run start
 ```
 The first run will take longer as it creates a virtual enviroment for the python to achieve minimal size.
 
-Now use hot-reload functionality
+Or you can use hot-reload functionality
 ```bash
 npm run dev
 ```
@@ -59,7 +55,6 @@ const file = await __Node__.fs.readFile("./hello.txt");
 There are some prebuilt ones: *fs.readFile*, *fs.writeFile*, *fs.mkdir*, *fs.readdir*, *fs.pathExists*, *fs.isfile*, *fs.isdir*, *path.join*, *path.basename*, *path.dirname*, *path.resolve*. More of them is comming soon with a better documentation.
 
 
-
 #### Compiling
 To compile the app pequena uses pyinstaller. The script in `package.json` comes with default settings which should work optimaly.
 So you can run this command:
@@ -68,5 +63,15 @@ npm run build
 ```
 A single binary file will be created in `dist/` folder.
 
+>
+> Compiling to mobile apps is comming! But it will propably take a while. But you can definitely help!!
+> 
+
+## Contributing
+
+Contributions are always welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the [Github-publisher repository](https://github.com/Borecjeborec1/Pequena).
+
+I will be very glad for any kind of feedback!
+
 ## License
-Pequena is licensed under the MIT License.
+Pequena is licensed under the [MIT License](./LICENSE).
