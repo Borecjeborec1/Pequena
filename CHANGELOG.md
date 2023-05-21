@@ -1,4 +1,12 @@
 # Changelog
+#### [1.1.8] - 2023-05-21
+[Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
+
+##### Implemented enhancements:
+
+##### Fixed bugs:
+-  fixed the multi-window bug with dev reload ([#03d0694](https://github.com/Borecjeborec1/Pequena/commit/03d0694d901cc0c6891be47c1cc7b42be8d9c705))
+
 #### [1.1.7] - 2023-05-21
 
 [Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)

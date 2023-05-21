@@ -1,9 +1,14 @@
-const { spawnInEnv, checkForEnv, checkForPequena, killProcess } = require("./lib.js")
+const { spawnInEnv, checkForEnv, checkForPequena, killProcess, buildClient, buildMain } = require("./lib.js");
 
 checkForEnv()
 checkForPequena()
 
-const pyProcess = spawnInEnv("python Pequena/main.py");
+buildClient()
+
+buildMain()
+
+
+let pyProcess = spawnInEnv("python Pequena/main.py");
 
 pyProcess.stdout.on("data", (data) => {
   console.log("Data: " + data.toString());
@@ -14,26 +19,28 @@ pyProcess.stderr.on("data", (data) => {
 });
 
 pyProcess.on('exit', (code, signal) => {
-  console.log(code, signal)
+  console.log(code, signal);
   if (code === 0 && signal === null) {
-    console.log(`Python process closed by user. Qutting Dev reload`);
+    console.log(`Python process closed by user. Quitting Dev reload`);
     process.exit();
   }
 });
 
 process.on('exit', (code) => {
   console.log(`Closing pequena window.`);
-  killProcess(pyProcess.pid)
+  killProcess(pyProcess.pid);
 });
 
 process.on('SIGINT', () => {
-  killProcess(pyProcess.pid)
+  killProcess(pyProcess.pid);
 });
 
-const chokidar = require('chokidar');
-const watcher = chokidar.watch('./client');
-watcher.on('change', async () => {
+const fs = require('fs');
+
+const watchFile = './client';
+
+fs.watch(watchFile, { recursive: true }, async () => {
   console.log('Changes detected, restarting Pequena app...');
-  let res = await killProcess(pyProcess.pid, true)
-  pyProcess = spawnInEnv("python main.py")
+  await killProcess(pyProcess.pid, true);
+  pyProcess = spawnInEnv("python Pequena/main.py");
 });

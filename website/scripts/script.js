@@ -63,13 +63,15 @@ function closeDragElement() {
 }
 
 function openWindow(el) {
-  let winDiv = document.getElementById(el)
+  let winDiv = document.getElementById(el);
 
-  if (winDiv.style.display == "none" || !winDiv.style.display) {
-    winDiv.style.display = "flex"
-    bringWindowToFront(winDiv);
+  if (winDiv.classList.contains("appear")) {
+    winDiv.classList.remove("appear");
+    winDiv.classList.add("disappear");
   } else {
-    winDiv.style.display = "none"
+    winDiv.classList.remove("disappear");
+    winDiv.classList.add("appear");
+    bringWindowToFront(winDiv);
   }
 }
 
@@ -255,3 +257,7 @@ function main() {
  * Neutral color 1: #D5D5D5 (a light and subtle gray)
  * Neutral color 2: #9B9B9B (a darker and more pronounced gray)
  */
+document.addEventListener("DOMContentLoaded", function () {
+  var body = document.querySelector("body");
+  body.classList.add("animation-complete");
+});

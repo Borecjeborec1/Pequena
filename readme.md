@@ -17,6 +17,7 @@ After the installation, `main.py` and `settings.json` should appear in your root
 import Pequena
 
 window = Pequena.init_window()
+# This window object has access to the window API 
 ``` 
 
 Go to the `settings.json` and change the `src` attribute to an actual client directory and you are ready to go!

@@ -9,7 +9,10 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Wix Madefor Display", sans-serif;
-  overflow: hidden;
+  animation-name: pc-boot;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  overflow: hidden !important;
   background-image: url(../assets/bg.avif);
   background-position: center;
   background-repeat: no-repeat;
@@ -75,7 +78,7 @@ body {
   overflow: hidden;
 }
 .application:not(#pequena-home) {
-  display: none;
+  opacity: 0;
 }
 .application .title-bar {
   display: flex;
@@ -195,6 +198,14 @@ body {
 .application a {
   color: #FF5A5F;
 }
+.application.appear {
+  animation: appear 0.4s ease forwards;
+  pointer-events: auto;
+}
+.application.disappear {
+  animation: disappear 0.4s ease forwards;
+  pointer-events: none;
+}
 
 ::-moz-selection {
   background-color: rgba(83, 83, 83, 0.4745098039);
@@ -218,8 +229,8 @@ pre .copied {
 }
 
 #pequena-docs {
-  height: 781px;
-  width: 1322px;
+  height: 772px;
+  width: 1236px;
 }
 #pequena-docs .title-bar {
   background-color: #00A699;
@@ -394,4 +405,39 @@ pre .copied {
 }
 #pequena-info .app-content a {
   color: #FFB948;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0%) scale(0.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes disappear {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0%) scale(0.2);
+  }
+}
+@keyframes pc-boot {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }/*# sourceMappingURL=styles.css.map */
