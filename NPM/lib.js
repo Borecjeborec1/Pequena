@@ -4,7 +4,7 @@ const fs = require("fs");
 
 let HTML_NAME = "index.html"
 const BUILD_DIR = "./Pequena/build/";
-
+const MAIN_FC_NAME = "Adsadaad23112s"
 
 const DEFAULT_VALUES = {
   "title": "Hello world!",
@@ -36,6 +36,10 @@ const BASE_SCRIPT = `
         const __Pequena__ = pywebview.api.PequenaApi;
         const __Node__ = pywebview.api.NodeApi
         const __Exposed__ = pywebview.api.exposed
+        ${MAIN_FC_NAME}(__Pequena__,__Node__,__Exposed__)
+      })
+
+  function ${MAIN_FC_NAME}(__Pequena__,__Node__,__Exposed__){
 `;
 
 let filesToDelete = []
@@ -56,16 +60,23 @@ function buildMain() {
   transparent=${settings.transparent}, text_select=${settings.text_select}, zoomable=${settings.zoomable}, draggable=${settings.draggable}`
 
   const PYTHON_START = `Pequena.start_window(debug=${settings.debug})`
-
   let data = fs.readFileSync("./main.py", "utf-8")
-  data = data.replace(/^.*Pequena\.init_window\(.*/gm, `Pequena.init_window(${PYTHON_ARGS})`)
+  data = data.replace(/^.*Pequena\.init_window\(.*/gm, `\nwindow = Pequena.init_window(${PYTHON_ARGS})`)
+
+  const evaluateJsRegex = /evaluate_js\s*\((.*?)\)/g
+  const evaluateJsMatch = data.match(evaluateJsRegex);
+  for (let i of evaluateJsMatch) {
+    data = data.replace(i, i.replace(/global/g, MAIN_FC_NAME))
+  }
+
+
   data += PYTHON_START
   fs.writeFileSync("./Pequena/main.py", data)
 }
 
-function handleUserPyModules(modules) {
+async function handleUserPyModules(modules) {
   for (let module of modules) {
-    spawnInEnv(`pip install ${module}`, true)
+    await spawnInEnv(`pip install ${module}`, true)
   }
 }
 
@@ -200,7 +211,7 @@ function buildClient() {
 
   copyFolderSync(clientDir, BUILD_DIR);
 
-  let scriptStr = BASE_SCRIPT;
+  let scriptStr = "";
   let newHtml = "";
   const htmlContent = fs.readFileSync(clientHtml, "utf-8");
   let isScriptOpen = false;
@@ -244,14 +255,37 @@ function buildClient() {
 
 
   scriptStr = scriptStr.replace(/const /g, "var  ") // Prevent redeclaring error
-
-  newHtml = newHtml.replace("</body>", scriptStr + "})</script>\n</body>");
+  let initedFunctions = extractNames(scriptStr)
+  console.log(initedFunctions)
+  newHtml = newHtml.replace("</body>", BASE_SCRIPT + "\n" + scriptStr + "\n" + initedFunctions + "}</script>\n</body>");
 
   fs.writeFileSync(buildHtml, newHtml);
   filesToDelete = [...new Set(filesToDelete)]
   for (file of filesToDelete) {
     fs.unlinkSync("./Pequena/" + file.replace("client", "build"))
   }
+}
+
+function extractNames(code) {
+  const functionRegex = /function\s+([^(\s]+)\s*\(/g;
+  const variableRegex = /(?:var|let|const)\s+([^=\s;]+)/g;
+  let names = "";
+  let match;
+
+  // Extract function names
+  while ((match = functionRegex.exec(code)) !== null) {
+    const isNested = code.substring(0, match.index).includes("{");
+    if (!isNested) {
+      names += `${MAIN_FC_NAME}.${match[1]} = ${match[1]}\n`;
+    }
+  }
+
+  // Extract variable names
+  while ((match = variableRegex.exec(code)) !== null) {
+    names += `${MAIN_FC_NAME}.${match[1]} = ${match[1]}\n`;
+  }
+
+  return names;
 }
 
 

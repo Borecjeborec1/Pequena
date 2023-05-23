@@ -1,4 +1,13 @@
 # Changelog
+#### [1.1.9] - 2023-05-23
+
+[Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
+
+##### Implemented enhancements:
+-  ability to evaluate_js functions ([#097e216](https://github.com/Borecjeborec1/Pequena/commit/097e216ad9be8a0cf34e6fa744f484876fcc0fb3)) 
+
+##### Fixed bugs:
+
 #### [1.1.8] - 2023-05-21
 [Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
 

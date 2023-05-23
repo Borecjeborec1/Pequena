@@ -8,7 +8,7 @@ buildClient()
 buildMain()
 
 
-let pyProcess = spawnInEnv("python Pequena/main.py");
+let pyProcess = spawnInEnv("python -u Pequena/main.py");
 
 pyProcess.stdout.on("data", (data) => {
   console.log("Data: " + data.toString());
@@ -42,5 +42,5 @@ const watchFile = './client';
 fs.watch(watchFile, { recursive: true }, async () => {
   console.log('Changes detected, restarting Pequena app...');
   await killProcess(pyProcess.pid, true);
-  pyProcess = spawnInEnv("python Pequena/main.py");
+  pyProcess = spawnInEnv("python -u Pequena/main.py");
 });
