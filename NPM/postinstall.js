@@ -35,6 +35,15 @@ function createPequenaFolder() {
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
 
+    const libJS = fs.readFileSync(__dirname + "/lib.js", "utf-8")
+    const libJSPath = path.join(folderPath, 'lib.js');
+    fs.writeFileSync(libJSPath, libJS);
+
+    fs.mkdirSync(path.join(folderPath, '/addons'));
+    const helperJS = fs.readFileSync(__dirname + "/addons/functions.js", "utf-8")
+    const helperJSPath = path.join(folderPath, '/addons/functions.js');
+    fs.writeFileSync(helperJSPath, helperJS);
+
     const startJS = fs.readFileSync(__dirname + "/start.js", "utf-8")
     const startJSPath = path.join(folderPath, 'start.js');
     fs.writeFileSync(startJSPath, startJS);
@@ -42,10 +51,6 @@ function createPequenaFolder() {
     const devJS = fs.readFileSync(__dirname + "/dev.js", "utf-8")
     const devJSPath = path.join(folderPath, 'dev.js');
     fs.writeFileSync(devJSPath, devJS);
-
-    const libJS = fs.readFileSync(__dirname + "/lib.js", "utf-8")
-    const libJSPath = path.join(folderPath, 'lib.js');
-    fs.writeFileSync(libJSPath, libJS);
 
     const buildJS = fs.readFileSync(__dirname + "/build.js", "utf-8")
     const buildJSPath = path.join(folderPath, 'build.js');

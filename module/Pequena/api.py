@@ -1,76 +1,74 @@
 
-# Automaticly generated code.
-# Changes here can get overwritten!
-
+import webview
 import os
 
 
 class PequenaApi:
-    def __init__(self, window):
-        self._window = window
+    def getWindowInfo():
+        return {"x": webview.windows[0].x, "y": webview.windows[0].y, "width": webview.windows[0].width, "height": webview.windows[0].height}
 
-    def getWindowInfo(self):
-        return {"x": self._window.x, "y": self._window.y, "width": self._window.width, "height": self._window.height}
+    def getScreenInfo():
+        return {"width": webview.screens[0].width, "height": webview.screens[0].height}
 
-    def minimizeWindow(self):
-        return self._window.minimize()
+    def minimizeWindow():
+        return webview.windows[0].minimize()
 
-    def unminimizeWindow(self):
-        return self._window.restore()
+    def unminimizeWindow():
+        return webview.windows[0].restore()
 
-    def hideWindow(self):
-        return self._window.hide()
+    def hideWindow():
+        return webview.windows[0].hide()
 
-    def unhideWindow(self):
-        return self._window.show()
+    def unhideWindow():
+        return webview.windows[0].show()
 
-    def toggleFullscreen(self):
-        return self._window.toggle_fullscreen()
+    def toggleFullscreen():
+        return webview.windows[0].toggle_fullscreen()
 
-    def moveWindow(self, _x, _y):
-        return self._window.move(_x, _y)
+    def moveWindow(_x, _y):
+        return webview.windows[0].move(_x, _y)
 
-    def resizeWindow(self, _width, _height):
-        return self._window.resize(_width, _height)
+    def resizeWindow(_width, _height):
+        return webview.windows[0].resize(_width, _height)
 
-    def setWindowName(self, _name):
-        return self._window.set_title(_name)
+    def setWindowName(_name):
+        return webview.windows[0].set_title(_name)
 
 
 class NodeApi:
     class fs:
-        def readFile(self, _path):
+        def readFile(_path):
             with open(_path, 'r') as file:
                 return file.read()
 
-        def writeFile(self, _path, _content):
+        def writeFile(_path, _content):
             with open(_path, 'w') as file:
                 file.write(_content)
 
-        def mkdir(self, _path):
+        def mkdir(_path):
             os.mkdir(_path)
 
-        def readdir(self, _path):
+        def readdir(_path):
             return os.listdir(_path)
 
-        def pathExists(self, _path):
+        def pathExists(_path):
             return os.path.exists(_path)
 
-        def isfile(self, _path):
+        def isfile(_path):
             return os.path.isfile(_path)
 
-        def isdir(self, _path):
+        def isdir(_path):
             return os.path.isdir(_path)
 
     class path:
-        def join(self, *paths):
+        def join(*paths):
             return os.path.join(*paths)
 
-        def basename(self, _path):
+        def basename(_path):
             return os.path.basename(_path)
 
-        def dirname(self, _path):
+        def dirname(_path):
             return os.path.dirname(_path)
 
-        def resolve(self, *paths):
+        def resolve(*paths):
             return os.path.abspath(os.path.join(*paths))

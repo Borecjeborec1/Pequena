@@ -7,6 +7,7 @@
 -  ability to evaluate_js functions ([#097e216](https://github.com/Borecjeborec1/Pequena/commit/097e216ad9be8a0cf34e6fa744f484876fcc0fb3)) 
 
 ##### Fixed bugs:
+-  fixed build path ([#a57ab21](https://github.com/Borecjeborec1/Pequena/commit/a57ab21370eed263905997521b40623a4cbfdf4a))
 
 #### [1.1.8] - 2023-05-21
 [Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)

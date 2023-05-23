@@ -1,10 +1,11 @@
 const { spawn, execSync, spawnSync } = require("child_process");
 const path = require("path");
 const fs = require("fs");
+const { convertPyTypes, killProcess, extractNames, copyFolderSync, generateRandomString } = require("./addons/functions.js")
 
 let HTML_NAME = "index.html"
 const BUILD_DIR = "./Pequena/build/";
-const MAIN_FC_NAME = "Adsadaad23112s"
+const MAIN_FC_NAME = generateRandomString(10)
 
 const DEFAULT_VALUES = {
   "title": "Hello world!",
@@ -39,7 +40,7 @@ const BASE_SCRIPT = `
         ${MAIN_FC_NAME}(__Pequena__,__Node__,__Exposed__)
       })
 
-  function ${MAIN_FC_NAME}(__Pequena__,__Node__,__Exposed__){
+  async function ${MAIN_FC_NAME}(__Pequena__,__Node__,__Exposed__){
 `;
 
 let filesToDelete = []
@@ -50,18 +51,28 @@ let filesToDelete = []
 function buildMain() {
   let settings = JSON.parse(fs.readFileSync("./settings.json"))
   for (let key in DEFAULT_VALUES) {
-    settings[key] = handlePyTypes(settings[key], key)
+    settings[key] = convertPyTypes(settings[key], key)
   }
 
-  const PYTHON_ARGS = `window_name=${settings.title}, src="./build/${HTML_NAME}", width=${settings.width}, height=${settings.height},
+  const PYTHON_ARGS = `window_name=${settings.title}, src=html_path, width=${settings.width}, height=${settings.height},
   x=${settings.x}, y=${settings.y}, resizable=${settings.resizable}, fullscreen=${settings.fullscreen}, min_size=(${settings.min_x}, ${settings.min_y}),
   hidden=${settings.hidden}, frameless=${settings.frameless}, easy_drag=${settings.easy_drag},
   minimized=${settings.minimized}, on_top=${settings.on_top}, confirm_close=${settings.confirm_close}, background_color=${settings.background_color},
   transparent=${settings.transparent}, text_select=${settings.text_select}, zoomable=${settings.zoomable}, draggable=${settings.draggable}`
 
-  const PYTHON_START = `Pequena.start_window(debug=${settings.debug})`
+  const PYTHON_START = `import sys
+if getattr(sys, 'frozen', False):
+  html_path = "./Pequena/build/${HTML_NAME}"
+else:
+  html_path = "./build/${HTML_NAME}"
+    
+window = Pequena.init_window(${PYTHON_ARGS})`
+
+  const PYTHON_END = `\nPequena.start_window(debug=${settings.debug})`
+
   let data = fs.readFileSync("./main.py", "utf-8")
-  data = data.replace(/^.*Pequena\.init_window\(.*/gm, `\nwindow = Pequena.init_window(${PYTHON_ARGS})`)
+
+  data = data.replace(/^.*Pequena\.init_window\(.*/gm, PYTHON_START)
 
   const evaluateJsRegex = /evaluate_js\s*\((.*?)\)/g
   const evaluateJsMatch = data.match(evaluateJsRegex);
@@ -70,32 +81,16 @@ function buildMain() {
   }
 
 
-  data += PYTHON_START
+  data += PYTHON_END
   fs.writeFileSync("./Pequena/main.py", data)
 }
 
 async function handleUserPyModules(modules) {
   for (let module of modules) {
+    console.log("Installing custom module: " + module)
     await spawnInEnv(`pip install ${module}`, true)
   }
 }
-
-
-function handlePyTypes(_value, _key = "") {
-  if (_value === undefined)
-    return handlePyTypes(DEFAULT_VALUES[_key])
-  if (_value === true)
-    return "True"
-  if (_value === false)
-    return "False"
-  if (_value === "center")
-    return "None"
-  if (typeof _value == "string")
-    return `\"${_value}\"`
-  return _value
-
-}
-
 
 function spawnInEnv(cmd, sync = false) {
   const venvActivateFile = process.platform === 'win32' ? 'activate.bat' : 'activate';
@@ -157,24 +152,8 @@ async function checkForPequena() {
   if (!fs.existsSync(path.join(__dirname, "Lib", "site-packages", "Pequena"))) {
     console.log("Installing Pequena")
     let res = await spawnInEnv(`pip install Pequena`, true)
-    const fileToFix = path.join(__dirname, "Lib", "site-packages", "webview", "http.py")
-    let fileContent = fs.readFileSync(fileToFix, "utf-8")
-    fileContent = fileContent.replace(/import tempfile/, "import os")
-    fileContent = fileContent.replace(/tempfile.TemporaryFile\(\)/g, "open(os.devnull, 'w')")
-    fs.writeFileSync(fileToFix, fileContent)
-    return res
   }
-  return true
 }
-
-
-function killProcess(_pid, sync = false) {
-  if (sync)
-    spawnSync("taskkill", ["/pid", _pid, '/f', '/t']);
-  spawn("taskkill", ["/pid", _pid, '/f', '/t']);
-}
-
-
 
 function checkForModules(jsPath) {
   const scriptDir = path.dirname(jsPath);
@@ -255,8 +234,7 @@ function buildClient() {
 
 
   scriptStr = scriptStr.replace(/const /g, "var  ") // Prevent redeclaring error
-  let initedFunctions = extractNames(scriptStr)
-  console.log(initedFunctions)
+  let initedFunctions = extractNames(scriptStr, MAIN_FC_NAME)
   newHtml = newHtml.replace("</body>", BASE_SCRIPT + "\n" + scriptStr + "\n" + initedFunctions + "}</script>\n</body>");
 
   fs.writeFileSync(buildHtml, newHtml);
@@ -266,46 +244,5 @@ function buildClient() {
   }
 }
 
-function extractNames(code) {
-  const functionRegex = /function\s+([^(\s]+)\s*\(/g;
-  const variableRegex = /(?:var|let|const)\s+([^=\s;]+)/g;
-  let names = "";
-  let match;
-
-  // Extract function names
-  while ((match = functionRegex.exec(code)) !== null) {
-    const isNested = code.substring(0, match.index).includes("{");
-    if (!isNested) {
-      names += `${MAIN_FC_NAME}.${match[1]} = ${match[1]}\n`;
-    }
-  }
-
-  // Extract variable names
-  while ((match = variableRegex.exec(code)) !== null) {
-    names += `${MAIN_FC_NAME}.${match[1]} = ${match[1]}\n`;
-  }
-
-  return names;
-}
-
-
-function copyFolderSync(source, target) {
-  if (!fs.existsSync(target)) {
-    fs.mkdirSync(target);
-  }
-  const files = fs.readdirSync(source);
-  files.forEach((file) => {
-    const sourcePath = path.join(source, file);
-    const targetPath = path.join(target, file);
-    if (fs.lstatSync(sourcePath).isDirectory()) {
-      copyFolderSync(sourcePath, targetPath);
-    } else {
-      // console.log("Moved " + sourcePath + " to " + targetPath)
-      fs.copyFileSync(sourcePath, targetPath);
-    }
-    //else if (path.extname(file) === '.scss'||path.extname(file) === 'css.map') { // filter out  files
-    //}
-  });
-}
 
 module.exports = { spawnInEnv, checkForEnv, checkForPequena, killProcess, buildMain, buildClient }

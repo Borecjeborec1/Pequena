@@ -35,7 +35,7 @@ def init_window(src="client/index.html", window_name="Hello World!", width=800, 
 
 
 def start_window(port=None, debug=True):
-    _window.expose_class(PequenaApi(_window))
+    _window.expose_class(PequenaApi())
     _window.expose_class(NodeApi())
     for fc in exposed_fcs:
         _window.expose(fc)
