@@ -21,5 +21,8 @@
   "zoomable": false,
   "draggable": false,
   "debug":false,
-  "py_modules":[]
+  "name":"",
+  "icon":"",
+  "py_modules":[],
+  "ignored_files":[".scss",".map"]
 }

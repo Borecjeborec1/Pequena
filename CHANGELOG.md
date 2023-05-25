@@ -1,4 +1,13 @@
 # Changelog
+#### [1.1.11] - 2023-05-25
+
+[Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)
+
+##### Implemented enhancements:
+-  added child_process and os api ([#500e1af](https://github.com/Borecjeborec1/Pequena/commit/500e1afd88a365717db0bd2d6c0290ee76dbf2c4)) 
+
+##### Fixed bugs:
+
 #### [1.1.9] - 2023-05-23
 
 [Full Changelog](https://github.com/Borecjeborec1/Pequena/commits/main)

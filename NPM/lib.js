@@ -29,7 +29,11 @@ const DEFAULT_VALUES = {
   "text_select": false,
   "zoomable": false,
   "draggable": false,
-  "debug": false
+  "debug": false,
+  "name": "",
+  "icon": "",
+  "py_modules": [],
+  "ignored_files": []
 }
 const BASE_SCRIPT = `
 <script>
@@ -74,12 +78,7 @@ window = Pequena.init_window(${PYTHON_ARGS})`
 
   data = data.replace(/^.*Pequena\.init_window\(.*/gm, PYTHON_START)
 
-  const evaluateJsRegex = /evaluate_js\s*\((.*?)\)/g
-  const evaluateJsMatch = data.match(evaluateJsRegex);
-  for (let i of evaluateJsMatch) {
-    data = data.replace(i, i.replace(/global/g, MAIN_FC_NAME))
-  }
-
+  data = data.replace(/global\./g, MAIN_FC_NAME + ".");
 
   data += PYTHON_END
   fs.writeFileSync("./Pequena/main.py", data)
@@ -88,7 +87,7 @@ window = Pequena.init_window(${PYTHON_ARGS})`
 async function handleUserPyModules(modules) {
   for (let module of modules) {
     console.log("Installing custom module: " + module)
-    await spawnInEnv(`pip install ${module}`, true)
+    let res = await spawnInEnv(`pip install ${module}`, true)
   }
 }
 

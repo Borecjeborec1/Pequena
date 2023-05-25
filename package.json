@@ -1,6 +1,6 @@
 {
   "name": "pequena",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "HTML desktop creation framework",
   "scripts": {
     "build:py": "cd module/ && python setup.py sdist bdist_wheel",
